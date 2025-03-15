@@ -57,7 +57,7 @@ const Login = () => {
         <Text className="font-pregular text-gray-200">
           Don't have an account?
         </Text>
-        <Link href="/Login" className="text-lg text-secondary mx-2">
+        <Link href="/Register" className="text-lg text-secondary mx-2">
           Register
         </Link>
       </View>
