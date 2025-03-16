@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  Alert
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "../../constants";
-import {Link} from "expo-router";
+import { Link, router } from "expo-router";
 import Checkbox from "expo-checkbox";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utility/firebaseConfig";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,6 +48,19 @@ const Register = () => {
     setShowDatePicker(false); // Close the picker after selection
   };
 
+  async function handleSubmit() {
+
+    try {
+      await createUserWithEmailAndPassword(auth,form.email,form.password)
+ Alert.alert("Success", "Signup successfully");
+      //router.push("/EmailOTP");
+
+    } catch (error) {
+      console.log(error)
+    }
+   
+  }
+
   return (
     <SafeAreaView className="bg-primary w-full h-full justify-center">
       <ScrollView
@@ -65,6 +81,7 @@ const Register = () => {
             resizeMode="contain"
           />
           <TextInput
+            onChangeText={(e) => setForm({ ...form, phone: e })}
             className="flex-1 font-pmedium ml-2"
             placeholder="Phone number"
             keyboardType="number-pad"
@@ -74,7 +91,9 @@ const Register = () => {
         {/* Email Input */}
         <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
           <Image className="w-6 h-6" source={icons.mail} resizeMode="contain" />
+
           <TextInput
+            onChangeText={(e) => setForm({ ...form, email: e })}
             className="flex-1 font-pmedium ml-2"
             placeholder="Email Address"
             keyboardType="email-address"
@@ -85,6 +104,7 @@ const Register = () => {
         <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
           <Image className="w-6 h-6" source={icons.lock} resizeMode="contain" />
           <TextInput
+            onChangeText={(e) => setForm({ ...form, password: e })}
             className="flex-1 font-pmedium ml-2"
             placeholder="Password"
             secureTextEntry={!showPassword}
@@ -102,6 +122,7 @@ const Register = () => {
         <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
           <Image className="w-6 h-6" source={icons.user} resizeMode="contain" />
           <TextInput
+            onChangeText={(e) => setForm({ ...form, firstName: e })}
             className="flex-1 font-pmedium ml-2"
             placeholder="First Name"
           />
@@ -111,6 +132,7 @@ const Register = () => {
         <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
           <Image className="w-6 h-6" source={icons.user} resizeMode="contain" />
           <TextInput
+            onChangeText={(e) => setForm({ ...form, lastName: e })}
             className="flex-1 font-pmedium ml-2"
             placeholder="Last Name"
           />
@@ -140,11 +162,14 @@ const Register = () => {
           />
         )}
         <View className="flex-row items-center w-full h-[56px] px-4">
-          <Checkbox value={checked} onValueChange={setChecked} />
+          <Checkbox value={checked} onValueChange={ToggleTerms} />
           <Text className="ml-3">I agree to the terms and conditions</Text>
         </View>
 
-        <TouchableOpacity className="bg-secondary mt-5 flex-row p-3 rounded-full items-center justify-center">
+        <TouchableOpacity
+          onPress={handleSubmit}
+          className="bg-secondary mt-5 flex-row p-3 rounded-full items-center justify-center"
+        >
           <Text className="ml-3 text-lg text-white items-center justify-center">
             Submit
           </Text>

@@ -1,13 +1,50 @@
-import React from 'react'
-import { View,Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, ScrollView,Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { icons } from "../../constants";
 
-const EmailOtp = () => {
+const EmailOTP = () => {
   return (
-    <SafeAreaView>
-        <Text>Email OTP</Text>
-    </SafeAreaView>
-  )
-}
+    <SafeAreaView className="bg-primary h-full w-full justify-center">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="mx-2 mb-2 mt-14"
+        contentContainerStyle={{ minHeight: "100%", marginVertical: 70 }}
+      >
+        <View className="w-full justify-center items-center my-8">
+          <Text className="text-gray-200 font-bold">
+            An Email verification link has been sent to you
+          </Text>
+          <Text className="text-gray-200 mt-6">Click the button once you </Text>
+        </View>
 
-export default EmailOtp
+        <TouchableOpacity className="bg-secondary shadow-sm flex-row p-3 mt-3 rounded-full items-center justify-center">
+          <Text className="ml-3 text-lg text-white">Verify Email</Text>
+        </TouchableOpacity>
+
+        <View className="flex-row justify-between mt-5">
+          <View className="flex-row items-center">
+            <Image
+              className="w-4 h-4"
+              resizeMode="contain"
+              source={icons.vectorPhone}
+            />
+            <Text className="text-gray-200 ml-1">Get a call</Text>
+          </View>
+
+          <View className="flex-row items-center">
+            <Image
+              className="w-4 h-4"
+              resizeMode="contain"
+              source={icons.vectorEmail}
+            />
+            <Text className="text-gray-200 ml-1">Receive as sms</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default EmailOTP;
