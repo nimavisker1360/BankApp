@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
   View,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "../../constants";
 import { Link, router } from "expo-router";
 import Checkbox from "expo-checkbox";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../../utility/firebaseConfig";
+import Loader from "../../components/Loader";
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -48,21 +53,33 @@ const Register = () => {
     setShowDatePicker(false); // Close the picker after selection
   };
 
-  async function handleSubmit() {
-
+  const SendOTP = async () => {
     try {
-      await createUserWithEmailAndPassword(auth,form.email,form.password)
- Alert.alert("Success", "Signup successfully");
-      //router.push("/EmailOTP");
+      const user = auth.currentUser;
+      await sendEmailVerification(user);
+      Alert.alert("Success", "Email verification link sent!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  async function handleSubmit() {
+    
+    try {
+      await createUserWithEmailAndPassword(auth, form.email, form.password);
+      //Alert.alert("Success", "Signup successfully");
+
+      SendOTP()
+        router.push("/EmailOTP");
 
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-   
   }
 
   return (
     <SafeAreaView className="bg-primary w-full h-full justify-center">
+      {loading && <Loader />}
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="mx-2 mb-2"

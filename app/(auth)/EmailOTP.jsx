@@ -1,12 +1,43 @@
-import { TouchableOpacity } from "react-native";
-import React from "react";
-import { View, Text, ScrollView,Image } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "../../constants";
+import { auth } from "../../utility/firebaseConfig";
+import { router } from "expo-router";
+import Loader from "../../components/Loader";
 
 const EmailOTP = () => {
+  const [loading, setLoading] = useState(false);
+
+  const SendEmailOTP = async () => {
+    // send email otp
+    setLoading(true);
+
+    try {
+      const user = auth.currentUser;
+      await user.reload();
+
+      if (user.emailVerified) {
+        router.replace("/Login");
+      } else {
+        Alert.alert("Error", "Email not verified,Please check your inbox");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <SafeAreaView className="bg-primary h-full w-full justify-center">
+      {loading && <Loader />}
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="mx-2 mb-2 mt-14"
@@ -19,7 +50,10 @@ const EmailOTP = () => {
           <Text className="text-gray-200 mt-6">Click the button once you </Text>
         </View>
 
-        <TouchableOpacity className="bg-secondary shadow-sm flex-row p-3 mt-3 rounded-full items-center justify-center">
+        <TouchableOpacity
+          onPress={SendEmailOTP}
+          className="bg-secondary shadow-sm flex-row p-3 mt-3 rounded-full items-center justify-center"
+        >
           <Text className="ml-3 text-lg text-white">Verify Email</Text>
         </TouchableOpacity>
 
