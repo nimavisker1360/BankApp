@@ -1,208 +1,264 @@
-import React, { useState } from "react";
-import {
-  Image,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Platform,
-  Alert,
-} from "react-native";
+import React, {useState} from "react";
+import {Image, ScrollView, Text, TextInput, TouchableOpacity, View, Platform, Alert} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {icons} from "../../constants";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { icons } from "../../constants";
-import { Link, router } from "expo-router";
-import Checkbox from "expo-checkbox";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import { auth } from "../../utility/firebaseConfig";
+import Checkbox from "expo-checkbox"
+import {Link, router} from "expo-router";
+import {createUserWithEmailAndPassword, sendEmailVerification, updateProfile} from "firebase/auth"
+import {collection, query, where, getDocs, doc, setDoc} from "firebase/firestore"
+import {auth, db} from "../../utility/firebaseConfig"
 import Loader from "../../components/Loader";
 
+
 const Register = () => {
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [form, setForm] = useState({
-    phone: "",
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    terms: checked,
-  });
+    const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const [showDateOfBirth, setShowDateOfBirth] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [checked, setChecked] = useState(false);
+    const [form, setForm] = useState({
+        phone: "",
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        terms: checked
+    })
 
-  // Toggle terms and conditions
-  const ToggleTerms = () => {
-    const newChecked = !checked;
-    setChecked(newChecked);
-    setForm({ ...form, terms: newChecked });
-  };
-
-  // Handle date selection
-  const onChange = (event, selectedDate) => {
-    if (selectedDate) {
-      setDate(selectedDate);
-      setForm({ ...form, dateOfBirth: selectedDate.toLocaleDateString() });
+    //terms and condition
+    const ToggleTerms = () => {
+        const newChecked = !checked
+        setChecked(newChecked)
+        setForm({...form, terms: newChecked})
     }
-    setShowDatePicker(false); // Close the picker after selection
-  };
 
-  const SendOTP = async () => {
-    try {
-      const user = auth.currentUser;
-      await sendEmailVerification(user);
-      Alert.alert("Success", "Email verification link sent!");
-    } catch (error) {
-      console.log(error);
+    //Date picker
+    const onchange = (event, selectedDate) => {
+        const currentDate = selectedDate || date
+        setShowDateOfBirth(Platform.OS === "ios")
+        setDate(currentDate)
+        setForm({...form, dateOfBirth: currentDate.toLocaleDateString()})
     }
-  };
-  async function handleSubmit() {
-    
-    try {
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
-      //Alert.alert("Success", "Signup successfully");
 
-      SendOTP()
-        router.push("/EmailOTP");
-
-    } catch (error) {
-      console.log(error);
+    const SendOTP = async () => {
+        try {
+            const user = auth.currentUser
+            await sendEmailVerification(user)
+            Alert.alert('Success', 'Email verification link sent!')
+        } catch (error) {
+            console.log(error)
+        }
     }
-  }
 
-  return (
-    <SafeAreaView className="bg-primary w-full h-full justify-center">
-      {loading && <Loader />}
+    async function handleSubmit() {
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        className="mx-2 mb-2"
-        contentContainerStyle={{ minHeight: "100%", justifyContent: "center" }}
-      >
-        <View className="w-full justify-center items-center mt-7">
-          <Text className="text-2xl font-pbold text-secondary">Welcome</Text>
-          <Text className="text-gray-200 text-lg">Register to get Started</Text>
-        </View>
+        if (!form.email || !form.password || !form.phone || !form.firstName || !form.lastName || !form.dateOfBirth) {
+            Alert.alert('Error', 'Please fill in all fields')
+            return
+        }
 
-        {/* Phone Input */}
-        <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
-          <Image
-            className="w-6 h-6"
-            source={icons.phone}
-            resizeMode="contain"
-          />
-          <TextInput
-            onChangeText={(e) => setForm({ ...form, phone: e })}
-            className="flex-1 font-pmedium ml-2"
-            placeholder="Phone number"
-            keyboardType="number-pad"
-          />
-        </View>
+        const phoneRegex = /^\+905\d{9}$/;
+        if (!phoneRegex.test(form.phone)) {
+            Alert.alert('Error', 'Please enter a valid phone number including the country code')
+            return
+        }
 
-        {/* Email Input */}
-        <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
-          <Image className="w-6 h-6" source={icons.mail} resizeMode="contain" />
+        //get bank account number from phone number
+        const accountNumber = form.phone.slice(3);
 
-          <TextInput
-            onChangeText={(e) => setForm({ ...form, email: e })}
-            className="flex-1 font-pmedium ml-2"
-            placeholder="Email Address"
-            keyboardType="email-address"
-          />
-        </View>
+        //handle phone number format here
 
-        {/* Password Input */}
-        <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
-          <Image className="w-6 h-6" source={icons.lock} resizeMode="contain" />
-          <TextInput
-            onChangeText={(e) => setForm({ ...form, password: e })}
-            className="flex-1 font-pmedium ml-2"
-            placeholder="Password"
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Image
-              className="w-6 h-6"
-              source={!showPassword ? icons.eye : icons.eyeHide}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
 
-        {/* First Name */}
-        <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
-          <Image className="w-6 h-6" source={icons.user} resizeMode="contain" />
-          <TextInput
-            onChangeText={(e) => setForm({ ...form, firstName: e })}
-            className="flex-1 font-pmedium ml-2"
-            placeholder="First Name"
-          />
-        </View>
+        try {
+            setLoading(true)
+            //Check for unique phone number
+            const usersCollection = collection(db, 'users')
+            const q = query(usersCollection, where("displayName", "==", form.phone))
+            const querySnapshot = await getDocs(q)
 
-        {/* Last Name */}
-        <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
-          <Image className="w-6 h-6" source={icons.user} resizeMode="contain" />
-          <TextInput
-            onChangeText={(e) => setForm({ ...form, lastName: e })}
-            className="flex-1 font-pmedium ml-2"
-            placeholder="Last Name"
-          />
-        </View>
+            if (!querySnapshot.empty) {
+                Alert.alert('Error', 'Phone number already exist')
+                return
+            }
+            //Creat user with email and password
+            const cred = await createUserWithEmailAndPassword(auth, form.email, form.password)
 
-        {/* Date Picker */}
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4"
-        >
-          <Image
-            className="w-6 h-6"
-            source={icons.calendar}
-            resizeMode="contain"
-          />
-          <Text className="flex-1 text-gray-300 ml-2">
-            {form.dateOfBirth || "Select Date of Birth"}
-          </Text>
-        </TouchableOpacity>
+            //update user profile with phone number
+            await updateProfile(cred.user, {displayName: form.phone})
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            onChange={onChange}
-          />
-        )}
-        <View className="flex-row items-center w-full h-[56px] px-4">
-          <Checkbox value={checked} onValueChange={ToggleTerms} />
-          <Text className="ml-3">I agree to the terms and conditions</Text>
-        </View>
+            //Create user document in firestore
+            const userDocRef = doc(usersCollection, cred.user.uid)
+            const docData = {
+                displayName: form.phone,
+                email: form.email,
+                firstName: form.firstName,
+                lastName: form.lastName,
+                pin: "1234",
+                image: "",
+                address: "27th street Istanbul",
+                accountNumber: accountNumber,
+                country: "Turkey",
+                state: "",
+                dateOfBirth: form.dateOfBirth,
+                accountBalance: 1000,
+                transactions: [],
+                beneficiary: []
+            }
+            await setDoc(userDocRef, docData)
 
-        <TouchableOpacity
-          onPress={handleSubmit}
-          className="bg-secondary mt-5 flex-row p-3 rounded-full items-center justify-center"
-        >
-          <Text className="ml-3 text-lg text-white items-center justify-center">
-            Submit
-          </Text>
-        </TouchableOpacity>
+            //send verification link
+            SendOTP()
+            //Navigate to OTP screen
+            router.push("/EmailOTP")
+        } catch (error) {
+            console.log(error.message)
+            if(error.code === 'auth/email-already-in-use'){
+                Alert.alert('Error', 'Email already used')
+            }
 
-        <View className="w-full justify-end items-center pt-3 flex-row">
-          <Text className="font-pregular text-gray-200">
-            Already have an account?{" "}
-          </Text>
-          <Link href="/Login" className="text-lg text-secondary mx-2">
-            Login
-          </Link>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        } finally {
+            setLoading(false)
+        }
+
+    }
+
+    return (
+        <SafeAreaView className="bg-primary h-full w-full justify-center ">
+            {loading &&
+                <Loader/>
+            }
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                className="mx-2 mb-2"
+                contentContainerStyle={{minHeight: "100%", justifyContent: "center"}}
+            >
+                <View className="w-full justify-center items-center mt-7">
+                    <Text className="text-2xl font-pbold text-secondary">Welcome</Text>
+                    <Text className="text-gray-200 text-lg">Register to get started</Text>
+                </View>
+
+                <View
+                    className=" mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+                    <Image
+                        className="w-6 h-6 "
+                        source={icons.phone}
+                        resizeMode="contain"
+                    />
+                      <TextInput
+                        onChangeText={(e) => setForm({ ...form, phone: e })}
+                        className="flex-1 font-pmedium ml-2"
+                        placeholder="Phone number (+905...)" // Updated placeholder
+                        keyboardType="phone-pad" // Use phone-pad for easier input
+                        maxLength={13} // Limit input length to +905 + 10 digits
+                    />
+                </View>
+
+                <View
+                    className=" mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+                    <Image
+                        className="w-6 h-6 "
+                        source={icons.mail}
+                        resizeMode="contain"
+                    />
+                    <TextInput
+                        onChangeText={(e) => setForm({...form, email: e})}
+                        className="flex-1 font-pmedium ml-2"
+                        placeholder="Email address"
+                        keyboardType="email-address"
+                    />
+                </View>
+
+                <View className="mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+                    <Image className="w-6 h-6" source={icons.lock} resizeMode="contain"/>
+                    <TextInput
+                        onChangeText={(e) => setForm({...form, password: e})}
+                        className="flex-1 font-pmedium ml-2"
+                        placeholder="Password"
+                        keyboardType="default"
+                        secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Image
+                            source={!showPassword ? icons.eye : icons.eyeHide}
+                            className="w-6 h-6"
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity>
+                </View>
+
+                <View
+                    className=" mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+                    <Image
+                        className="w-6 h-6 "
+                        source={icons.user}
+                        resizeMode="contain"
+                    />
+                    <TextInput
+                        onChangeText={(e) => setForm({...form, firstName: e})}
+                        className="flex-1 font-pmedium ml-2"
+                        placeholder="First Name"
+                    />
+                </View>
+
+                <View
+                    className=" mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+                    <Image
+                        className="w-6 h-6 "
+                        source={icons.user}
+                        resizeMode="contain"
+                    />
+                    <TextInput
+                        onChangeText={(e) => setForm({...form, lastName: e})}
+                        className="flex-1 font-pmedium ml-2"
+                        placeholder="Last Name"
+                    />
+                </View>
+
+                {/*Date picker field start*/}
+                <TouchableOpacity
+                    onPress={() => setShowDateOfBirth(true)}
+                    className=" mt-6 rounded-3xl border-2 border-[#E7E7E7] flex-row items-center w-full h-[56px] px-4">
+
+                    <Image
+                        resizeMode="contain"
+                        className="w-6 h-6"
+                        source={icons.calendar}/>
+
+                    <Text className="flex-1 text-gray-300 ml-2">
+                        {date.toLocaleDateString()} Date Of Birth
+                    </Text>
+                </TouchableOpacity>
+                {showDateOfBirth && (
+                    <DateTimePicker
+                        mode="date"
+                        value={date}
+                        display="default"
+                        onChange={onchange}
+                    />
+                )}
+
+                <View className="flex-row items-center w-full h-[56px] px-4">
+                    <Checkbox value={checked} onValueChange={ToggleTerms}/>
+                    <Text className="ml-3">I agree to the terms and conditions</Text>
+                </View>
+
+                <TouchableOpacity
+                    onPress={handleSubmit}
+                    className="bg-secondary mt-5 flex-row p-3 rounded-full items-center justify-center"
+                >
+                    <Text className="ml-3 text-lg text-white items-center justify-center">Submit</Text>
+                </TouchableOpacity>
+
+                <View className="w-full justify-end items-center pt-3 flex-row">
+                    <Text className="font-pregular text-gray-200">Already have an account? </Text>
+                    <Link href="/Login" className="text-lg text-secondary mx-2">Login</Link>
+                </View>
+
+            </ScrollView>
+        </SafeAreaView>
+    );
 };
 
 export default Register;
