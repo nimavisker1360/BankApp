@@ -1,27 +1,12 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import OnboardingOne from "./(Onboarding)/OnboardingOne";
-import OnboardingTwo from "./(Onboarding)/OnboardingTwo";
-import OnboardingThree from "./(Onboarding)/OnboardingThree";
-import * as Animatable from "react-native-animatable";
+import OnBoardingView from "../components/OnboardingView";
 import { icons } from "../constants";
 import { useState } from "react";
 import { router } from "expo-router";
 
-const OnBoardingView = ({ activeItem }) => {
-  const screens = [<OnboardingOne />, <OnboardingTwo />, <OnboardingThree />];
 
-  return (
-    <Animatable.View
-      key={activeItem}
-      animation="slideInRight"
-      duration={500}
-      style={{ flex: 1 }}
-    >
-      {screens[activeItem]}
-    </Animatable.View>
-  );
-};
+
 
 const Index = () => {
   const [activeItem, setActiveItem] = useState(0);
