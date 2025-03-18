@@ -2,14 +2,50 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OnBoardingView from "../components/OnboardingView";
 import { icons } from "../constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
-
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGlobalStore } from "@/context/globalStore";
+import Loader from "@/components/Loader";
 
 const Index = () => {
   const [activeItem, setActiveItem] = useState(0);
+  const [firstTime, setFirstTime] = useState(null);
+  const { loading, userData, isLogged } = useGlobalStore();
+
+  useEffect(() => {
+    const checkFirstTimeOpen = async () => {
+      const isFirstTime= await AsyncStorage.getItem("isFirstTime");
+
+      if (isFirstTime === null) {
+        //first time the app is opend after installation
+        await AsyncStorage.setItem("isFirstTime", "false");
+        setFirstTime("true");
+      } else {
+        setFirstTime("false");
+      }
+    };
+
+    checkFirstTimeOpen();
+  }, []);
+
+  useEffect(() => {
+    //After checking for the first time,proceed with the login check
+
+    if (firstTime === false && loading) {
+      if (isLogged && userData) {
+        router.replace("/Home");
+      } else {
+        router.replace("/Login");
+      }
+    }
+  }, [firstTime, isLogged, userData]);
+
+  if (firstTime === null || loading) {
+    //show the loader while waiting for the first time checks or global loading
+
+    return <Loader/>
+  }
 
   const handleNext = () => {
     if (activeItem < 2) {
@@ -18,13 +54,14 @@ const Index = () => {
       router.push("/Register");
     }
   };
-  return (
-    <SafeAreaView className="flex-1 bg-primary">
+  if(firstTime){
+    return(
+      <SafeAreaView className="flex-1 bg-primary">
       <OnBoardingView activeItem={activeItem} />
 
       {activeItem !== 2 && (
         <View className="flex-row justify-between items-center mx-2 mb-12">
-          <TouchableOpacity onPress={()=>router.replace('/Register')}>
+          <TouchableOpacity onPress={() => router.replace("/Register")}>
             <Text className="text-gray-200 text-center text-lg">Skip</Text>
           </TouchableOpacity>
 
@@ -59,6 +96,8 @@ const Index = () => {
         </View>
       )}
     </SafeAreaView>
-  );
+    )
+  }
+  return null //loading animation
 };
 export default Index;

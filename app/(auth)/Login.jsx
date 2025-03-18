@@ -15,11 +15,14 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db } from "../../utility/firebaseConfig";
 import Loader from "../../components/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGlobalStore } from "../../context/globalStore";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ phone: "", password: "" });
+
+  const{setUser}=useGlobalStore()
 
   async function handleLogin() {
     console.log("Login Attempt: form.phone =", form.phone);
@@ -54,8 +57,11 @@ const Login = () => {
       );
       const user = auth.currentUser;
       if (user.emailVerified) {
-        //console.log(result)
+        
+       setUser(credential.user);
+       
         //setUser(credential.user) // If you have setUser state, keep it.
+
         await AsyncStorage.setItem("userAuth", JSON.stringify(credential.user));
         router.replace("/Home");
       } else {

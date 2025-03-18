@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { useGlobalStore } from "../context/globalStore";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -12,8 +13,9 @@ export default function RootLayout() {
     "SF-Medium": require("../assets/fonts/SfMedium.otf"),
     "SF-Regular": require("../assets/fonts/SfRegular.otf"),
   });
-
+const {loadUserFromStorage}=useGlobalStore()
   useEffect(() => {
+    loadUserFromStorage()
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
@@ -27,6 +29,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(Onboarding)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 }
