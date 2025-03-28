@@ -21,7 +21,7 @@ const Index = () => {
     if (activeItem < 2) {
       timerRef.current = setTimeout(() => {
         setActiveItem((prevState) => prevState + 1);
-      }, 5000); // 5 seconds delay
+      }, 3000); // 5 seconds delay
     }
 
     // Cleanup on unmount
