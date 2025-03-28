@@ -10,7 +10,7 @@ const OnboardingView = ({ activeItem }) => {
   return (
     <Animatable.View
       key={activeItem}
-      animation="fadeIn"
+      animation="fadeIn"    
       duration={800}
       style={{ flex: 1 }}
     >
