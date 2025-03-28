@@ -23,14 +23,20 @@ const Register = () => {
       </Text>
 
       <View className="w-full mb-8">
-        <TouchableOpacity className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white">
+        <TouchableOpacity
+          className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
+          onPress={() => router.push("/(auth)/Login")}
+        >
           <Ionicons name="logo-apple" size={24} color="black" />
           <Text className="text-base ml-3 font-medium">
             Continue with Apple
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white">
+        <TouchableOpacity
+          className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
+          onPress={() => router.push("/(auth)/Login")}
+        >
           <Image
             source={{
               uri: "https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png",
@@ -43,7 +49,10 @@ const Register = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white">
+        <TouchableOpacity
+          className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
+          onPress={() => router.push("/(auth)/Login")}
+        >
           <Image
             source={{
               uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png",
@@ -59,7 +68,7 @@ const Register = () => {
 
       <View className="flex-row mb-8">
         <Text className="text-base text-gray-700">Already have account? </Text>
-        <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+        <TouchableOpacity onPress={() => router.push("/(auth)/Login")}>
           <Text className="text-base text-[#4285F4] font-medium">Log In</Text>
         </TouchableOpacity>
       </View>

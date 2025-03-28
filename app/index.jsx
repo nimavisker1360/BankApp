@@ -41,7 +41,7 @@ const Index = () => {
     if (activeItem < 2) {
       setActiveItem(activeItem + 1);
     } else {
-      router.push("/Register");
+      router.push("/(auth)/Signup");
     }
   }
 
@@ -60,7 +60,7 @@ const Index = () => {
 
       <View className="flex-row justify-between items-center mx-4 mb-12">
         {activeItem !== 2 ? (
-          <TouchableOpacity onPress={() => router.replace("Register")}>
+          <TouchableOpacity onPress={() => router.replace("/(auth)/Signup")}>
             <Text className="text-gray-200 text-center text-lg">Skip</Text>
           </TouchableOpacity>
         ) : (
