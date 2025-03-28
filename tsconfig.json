@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {},
+  "extends": "expo/tsconfig.base",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+, "app/index.jsx", "app/_layout.jsx", "app/(Onboarding)/OnboardingTwo.jsx", "app/(Onboarding)/OnboardingThree.jsx", "app/(Onboarding)/OnboardingOne.jsx", "app/(Onboarding)/_layout.jsx", "components/OnboardingView.jsx", "app/(auth)/Register.jsx"  ]
+}
