@@ -60,7 +60,7 @@ const Index = () => {
 
       <View className="flex-row justify-between items-center mx-4 mb-12">
         {activeItem !== 2 ? (
-          <TouchableOpacity onPress={() => router.replace("/(auth)/Signup")}>
+          <TouchableOpacity onPress={() => router.replace("/(auth)/Register")}>
             <Text className="text-gray-200 text-center text-lg">Skip</Text>
           </TouchableOpacity>
         ) : (
