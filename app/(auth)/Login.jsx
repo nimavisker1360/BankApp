@@ -80,15 +80,15 @@ const Login = () => {
       <Text className="text-lg mb-6">or continue with</Text>
 
       <View className="flex-row w-full justify-evenly mb-10">
-        <TouchableOpacity className="w-24 h-14 border border-gray-200 rounded-xl items-center justify-center">
+        <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
           <Ionicons name="logo-apple" size={30} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity className="w-24 h-14 border border-gray-200 rounded-xl items-center justify-center">
+        <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
           <Ionicons name="logo-facebook" size={30} color="#4267B2" />
         </TouchableOpacity>
 
-        <TouchableOpacity className="w-24 h-14 border border-gray-200 rounded-xl items-center justify-center">
+        <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
           <Image
             source={{
               uri: "https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png",

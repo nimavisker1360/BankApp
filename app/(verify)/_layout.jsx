@@ -5,7 +5,7 @@ const IdentifyLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="Identify" options={{ headerShown: false }} />
-   
+      <Stack.Screen name="ProofResidence" options={{ headerShown: false }} />
     </Stack>
   );
 };

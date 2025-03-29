@@ -33,7 +33,7 @@ const Page = () => {
 
         <TouchableOpacity
           className="bg-[#2D7BF6] py-4 rounded-full w-full items-center"
-          onPress={() => console.log("Verify Identity pressed")}
+          onPress={() => router.push("/(verify)/ProofResidence")}
         >
           <Text className="text-white text-lg font-semibold">
             Verify Identity

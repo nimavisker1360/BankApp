@@ -25,7 +25,7 @@ const Register = () => {
       <View className="w-full mb-8">
         <TouchableOpacity
           className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
-          onPress={() => router.push("/(auth)/Login")}
+          onPress={() => router.push("/(auth)/Signup")}
         >
           <Ionicons name="logo-apple" size={24} color="black" />
           <Text className="text-base ml-3 font-medium">
@@ -35,7 +35,7 @@ const Register = () => {
 
         <TouchableOpacity
           className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
-          onPress={() => router.push("/(auth)/Login")}
+          onPress={() => router.push("/(auth)/Signup")}
         >
           <Image
             source={{
@@ -51,7 +51,7 @@ const Register = () => {
 
         <TouchableOpacity
           className="flex-row items-center justify-center p-4 rounded-xl mb-4 border border-gray-200 bg-white"
-          onPress={() => router.push("/(auth)/Login")}
+          onPress={() => router.push("/(auth)/Signup")}
         >
           <Image
             source={{
