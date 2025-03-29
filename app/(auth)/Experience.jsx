@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { Checkbox } from "react-native-paper";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const Experience = () => {
   const [selected, setSelected] = useState([]);
@@ -37,12 +38,13 @@ const Experience = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="pt-5 px-4">
+        <TouchableOpacity onPress={() => router.push("/(auth)/Signup")}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         <TouchableOpacity
           className="w-12 h-12 justify-center"
           onPress={handleBack}
-        >
-          <Text className="text-4xl font-bold text-gray-800">←</Text>
-        </TouchableOpacity>
+        ></TouchableOpacity>
       </View>
 
       <ScrollView className="flex-1">

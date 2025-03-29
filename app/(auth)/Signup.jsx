@@ -19,7 +19,7 @@ const Login = () => {
   return (
     <SafeAreaView className="flex-1 bg-white p-5 items-center justify-center">
       <View className="absolute top-10 left-5">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.push("/(auth)/Login")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -69,7 +69,7 @@ const Login = () => {
         className="w-full bg-[#4285F4] py-3 rounded-full items-center mb-4"
         onPress={() => router.push("/(auth)/Experience")}
       >
-        <Text className="text-white text-lg font-semibold">ُsign Up</Text>
+        <Text className="text-white text-lg font-semibold">ُSign Up</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

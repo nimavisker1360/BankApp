@@ -19,7 +19,7 @@ const Login = () => {
   return (
     <SafeAreaView className="flex-1 bg-white p-5 items-center justify-center">
       <View className="absolute top-10 left-5">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.push("/(auth)/Register")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
       </View>
