@@ -74,7 +74,10 @@ const Experience = () => {
       </ScrollView>
 
       <View className="px-6 py-4 bg-white border-t border-gray-100">
-        <TouchableOpacity className="bg-blue-500 py-4 px-6 rounded-full w-full items-center">
+        <TouchableOpacity
+          className="bg-blue-500 py-4 px-6 rounded-full w-full items-center"
+          onPress={() => router.push("/Identify")}
+        >
           <Text className="text-white text-lg font-semibold">Continue</Text>
         </TouchableOpacity>
       </View>

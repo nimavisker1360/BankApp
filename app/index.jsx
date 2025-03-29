@@ -101,7 +101,7 @@ const Index = () => {
             <Image resizeMode="contain" source={icons.arrowRM} />
           </TouchableOpacity>
         ) : (
-          <View style={{ width: 40 }} /> // Empty view for spacing when on the last screen
+          <View style={{ width: 40 }} /> // Empty view for spacing
         )}
       </View>
     </SafeAreaView>
