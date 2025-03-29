@@ -82,6 +82,7 @@ const ProofResidence = () => {
   }, [showCountryModal]);
 
   const countries = [
+    { name: "Turkey", code: "tr", flag: "https://flagcdn.com/w320/tr.png" },
     {
       name: "Afghanistan",
       code: "af",
@@ -142,12 +143,12 @@ const ProofResidence = () => {
 
       <ScrollView className="flex-1 px-5 pt-4">
         {/* Page Title */}
-        <Text className="text-3xl font-bold text-[#222] mb-2">
+        <Text className="text-3xl font-bold text-[#222] mb-2 text-center">
           Proof of Residency
         </Text>
 
         {/* Subtitle */}
-        <Text className="text-base text-[#555] mb-8">
+        <Text className="text-base text-[#555] mb-8 text-center">
           Prove you live in {selectedCountry.name}
         </Text>
 
@@ -220,7 +221,7 @@ const ProofResidence = () => {
       {/* Country Selection Modal */}
       <Modal visible={modalVisible} animationType="none" transparent={false}>
         <Animated.View
-          className="flex-1 bg-[#2D7BF6]"
+          className="flex-1 bg-black"
           style={{
             opacity: fadeAnim,
             transform: [{ translateY: slideAnim }],
@@ -235,7 +236,7 @@ const ProofResidence = () => {
               <Ionicons name="close" size={24} color="white" />
             </TouchableOpacity>
           </View>
-          <ScrollView className="flex-1 bg-[#2D7BF6]">
+          <ScrollView className="flex-1 bg-black">
             {countries.map((country) => (
               <TouchableOpacity
                 key={country.code}
