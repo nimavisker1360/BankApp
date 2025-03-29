@@ -5,14 +5,116 @@ import {
   StatusBar,
   ScrollView,
   Image,
+  Modal,
+  Animated,
+  Dimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const ProofResidence = () => {
   const router = useRouter();
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [showCountryModal, setShowCountryModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: "United States of America",
+    code: "us",
+    flag: "https://flagcdn.com/w320/us.png",
+  });
+
+  // Animation values
+  const slideAnim = useRef(
+    new Animated.Value(Dimensions.get("window").height)
+  ).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // Open modal with animation
+  const openModal = () => {
+    setModalVisible(true);
+    // Reset position before animation starts
+    slideAnim.setValue(Dimensions.get("window").height);
+    fadeAnim.setValue(0);
+
+    // Start animations
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  // Close modal with animation
+  const closeModal = (country = null) => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: Dimensions.get("window").height,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setModalVisible(false);
+      setShowCountryModal(false);
+      if (country) {
+        setSelectedCountry(country);
+      }
+    });
+  };
+
+  // Trigger open modal when showCountryModal changes
+  useEffect(() => {
+    if (showCountryModal) {
+      openModal();
+    }
+  }, [showCountryModal]);
+
+  const countries = [
+    {
+      name: "Afghanistan",
+      code: "af",
+      flag: "https://flagcdn.com/w320/af.png",
+    },
+    {
+      name: "Åland Islands",
+      code: "ax",
+      flag: "https://flagcdn.com/w320/ax.png",
+    },
+    { name: "Albania", code: "al", flag: "https://flagcdn.com/w320/al.png" },
+    { name: "Algeria", code: "dz", flag: "https://flagcdn.com/w320/dz.png" },
+    {
+      name: "American Samoa",
+      code: "as",
+      flag: "https://flagcdn.com/w320/as.png",
+    },
+    { name: "Andorra", code: "ad", flag: "https://flagcdn.com/w320/ad.png" },
+    { name: "Angola", code: "ao", flag: "https://flagcdn.com/w320/ao.png" },
+    { name: "Anguilla", code: "ai", flag: "https://flagcdn.com/w320/ai.png" },
+    { name: "Antarctica", code: "aq", flag: "https://flagcdn.com/w320/aq.png" },
+    {
+      name: "Antigua and Barbuda",
+      code: "ag",
+      flag: "https://flagcdn.com/w320/ag.png",
+    },
+    { name: "Argentina", code: "ar", flag: "https://flagcdn.com/w320/ar.png" },
+    { name: "Armenia", code: "am", flag: "https://flagcdn.com/w320/am.png" },
+    { name: "Aruba", code: "aw", flag: "https://flagcdn.com/w320/aw.png" },
+    { name: "Australia", code: "au", flag: "https://flagcdn.com/w320/au.png" },
+    { name: "Austria", code: "at", flag: "https://flagcdn.com/w320/at.png" },
+    { name: "Azerbaijan", code: "az", flag: "https://flagcdn.com/w320/az.png" },
+  ];
 
   const verificationMethods = [
     {
@@ -46,7 +148,7 @@ const ProofResidence = () => {
 
         {/* Subtitle */}
         <Text className="text-base text-[#555] mb-8">
-          Prove you live in United States
+          Prove you live in {selectedCountry.name}
         </Text>
 
         {/* Nationality Section */}
@@ -56,13 +158,18 @@ const ProofResidence = () => {
           <TouchableOpacity className="flex-row items-center justify-between p-4 bg-white border-[0.5px] border-gray-100 rounded-2xl">
             <View className="flex-row items-center">
               <Image
-                source={{ uri: "https://flagcdn.com/w320/us.png" }}
+                source={{ uri: selectedCountry.flag }}
                 className="w-8 h-5 mr-3"
                 resizeMode="contain"
               />
-              <Text className="text-base">United States of America</Text>
+              <Text className="text-base">{selectedCountry.name}</Text>
             </View>
-            <Text className="text-[#2D7BF6] font-medium">Change</Text>
+            <Text
+              className="text-[#2D7BF6] font-medium"
+              onPress={() => setShowCountryModal(true)}
+            >
+              Change
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -109,6 +216,43 @@ const ProofResidence = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Country Selection Modal */}
+      <Modal visible={modalVisible} animationType="none" transparent={false}>
+        <Animated.View
+          className="flex-1 bg-[#2D7BF6]"
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
+          <View className="flex-row justify-between items-center px-5 pt-12 pb-3">
+            <View style={{ width: 24 }} />
+            <Text className="text-xl font-semibold text-white">
+              Select Country
+            </Text>
+            <TouchableOpacity onPress={() => closeModal()}>
+              <Ionicons name="close" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+          <ScrollView className="flex-1 bg-[#2D7BF6]">
+            {countries.map((country) => (
+              <TouchableOpacity
+                key={country.code}
+                className="flex-row items-center px-5 py-4 border-b border-[#ffffff20]"
+                onPress={() => closeModal(country)}
+              >
+                <Image
+                  source={{ uri: country.flag }}
+                  className="w-8 h-5 mr-3"
+                  resizeMode="contain"
+                />
+                <Text className="text-lg text-white">{country.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </Animated.View>
+      </Modal>
     </View>
   );
 };
