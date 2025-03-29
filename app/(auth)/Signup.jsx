@@ -67,7 +67,7 @@ const Login = () => {
 
       <TouchableOpacity
         className="w-full bg-[#4285F4] py-3 rounded-full items-center mb-4"
-        onPress={() => console.log("Sign In")}
+        onPress={() => router.push("/(auth)/Experience")}
       >
         <Text className="text-white text-lg font-semibold">ُsign Up</Text>
       </TouchableOpacity>
@@ -75,9 +75,7 @@ const Login = () => {
       <TouchableOpacity
         className="mb-6"
         onPress={() => console.log("Forgot Password")}
-      >
-       
-      </TouchableOpacity>
+      ></TouchableOpacity>
 
       <Text className="text-lg mb-6">or continue with</Text>
 
