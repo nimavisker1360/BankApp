@@ -7,15 +7,17 @@ import onboarding3 from "../assets/images/onboarding3.png";
 import rafiki from "../assets/images/rafiki.png";
 import user from "../assets/images/user.png";
 import woman from "../assets/images/woman.png";
+import identify from "../assets/images/identify.png";
 
 export default {
-    Kay,
-    Obi,
-    Soma,
-    onboarding1,
-    onboarding2,
-    onboarding3,
-    rafiki,
-    user,
-    woman,
+  Kay,
+  Obi,
+  Soma,
+  onboarding1,
+  onboarding2,
+  onboarding3,
+  rafiki,
+  user,
+  woman,
+  identify,
 };
