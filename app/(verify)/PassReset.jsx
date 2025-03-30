@@ -3,7 +3,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -25,32 +24,32 @@ const PassReset = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      className="flex-1 bg-white"
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.header}>
+      <ScrollView className="flex-grow px-5 pb-10 pt-12">
+        <View className="flex-row items-center mt-10 mb-10">
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Forgot Password</Text>
+          <Text className="text-2xl font-bold ml-4">Forgot Password</Text>
         </View>
 
-        <View style={styles.content}>
-          <View style={styles.resetIconContainer}>
+        <View className="items-center px-5 mt-6">
+          <View className="w-30 h-30 rounded-full bg-[#f0f7ff] justify-center items-center mb-8">
             <Ionicons name="lock-open-outline" size={60} color="#2979FF" />
           </View>
 
-          <Text style={styles.title}>Enter to Your Email</Text>
+          <Text className="text-2xl font-bold mb-8">Enter to Your Email</Text>
 
-          <View style={styles.inputContainer}>
+          <View className="flex-row items-center w-full h-[60px] rounded-lg bg-[#f5f5f5] mb-5 px-4">
             <Ionicons
               name="mail-outline"
               size={24}
               color="#888"
-              style={styles.inputIcon}
+              className="mr-2"
             />
             <TextInput
-              style={styles.input}
+              className="flex-1 h-full text-base"
               placeholder="Email"
               value={email}
               onChangeText={setEmail}
@@ -58,179 +57,45 @@ const PassReset = () => {
             />
           </View>
 
-          <View style={styles.checkboxContainer}>
+          <View className="flex-row items-center self-start mb-8">
             <TouchableOpacity
-              style={[styles.checkbox, rememberMe && styles.checkboxChecked]}
+              className={`w-6 h-6 border border-gray-300 rounded justify-center items-center ${
+                rememberMe ? "bg-[#f0f0f0]" : ""
+              }`}
               onPress={() => setRememberMe(!rememberMe)}
             >
               {rememberMe && (
                 <Ionicons name="checkmark" size={18} color="#000" />
               )}
             </TouchableOpacity>
-            <Text style={styles.checkboxLabel}>Remember me</Text>
+            <Text className="text-base text-gray-700 ml-2">Remember me</Text>
           </View>
 
           <TouchableOpacity
-            style={styles.resetButton}
+            className="w-full h-14 bg-[#2979FF] rounded-full justify-center items-center mb-5"
             onPress={() => router.replace("/Login")}
           >
-            <Text style={styles.resetButtonText}>Reset Password</Text>
+            <Text className="text-white text-lg font-bold">Reset Password</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.rememberLink}
-     
-          >
-            <Text style={styles.rememberLinkText}>Remember the password?</Text>
+          <TouchableOpacity className="mb-8">
+            <Text className="text-[#2979FF] text-base">
+              Remember the password?
+            </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account? </Text>
-          <Link href="/signup" asChild>
-            <TouchableOpacity>
-              <Text style={styles.signUpText}>Sign Up</Text>
-            </TouchableOpacity>
-          </Link>
+        <View className="flex-row justify-center items-center mt-16 py-2">
+          <Text className="text-base text-gray-700">
+            Don't have an account?{" "}
+          </Text>
+          <TouchableOpacity onPress={() => router.push("/Signup")}>
+            <Text className="text-base text-[#2979FF] font-bold">Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 20,
-    paddingBottom: 40,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 40,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginLeft: 15,
-  },
-  content: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  resetIconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#f0f7ff",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  avatarContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: "#2979FF",
-    marginBottom: 30,
-  },
-  avatarText: {
-    fontSize: 70,
-    color: "#2979FF",
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 30,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    height: 60,
-    borderRadius: 10,
-    backgroundColor: "#f5f5f5",
-    marginBottom: 20,
-    paddingHorizontal: 15,
-  },
-  inputIcon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    height: "100%",
-    fontSize: 16,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
-    marginBottom: 30,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    marginRight: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkboxChecked: {
-    backgroundColor: "#f0f0f0",
-  },
-  checkboxLabel: {
-    fontSize: 16,
-    color: "#333",
-  },
-  resetButton: {
-    width: "100%",
-    height: 56,
-    backgroundColor: "#2979FF",
-    borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  resetButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  rememberLink: {
-    marginBottom: 30,
-  },
-  rememberLinkText: {
-    color: "#2979FF",
-    fontSize: 16,
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-    paddingVertical: 10,
-  },
-  footerText: {
-    fontSize: 16,
-    color: "#333",
-  },
-  signUpText: {
-    fontSize: 16,
-    color: "#2979FF",
-    fontWeight: "bold",
-  },
-});
 
 export default PassReset;

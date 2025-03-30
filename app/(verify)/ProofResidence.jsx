@@ -210,7 +210,7 @@ const ProofResidence = () => {
       <View className="p-5">
         <TouchableOpacity
           className="bg-[#2D7BF6] py-4 rounded-full w-full items-center"
-          onPress={() => console.log("Verify Identity")}
+          onPress={() => router.push("/ProofIdCard")}
         >
           <Text className="text-white text-lg font-semibold">
             Verify Identity
