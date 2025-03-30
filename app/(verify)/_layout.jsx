@@ -6,6 +6,7 @@ const IdentifyLayout = () => {
     <Stack>
       <Stack.Screen name="Identify" options={{ headerShown: false }} />
       <Stack.Screen name="ProofResidence" options={{ headerShown: false }} />
+      <Stack.Screen name="PassReset" options={{ headerShown: false }} />
     </Stack>
   );
 };

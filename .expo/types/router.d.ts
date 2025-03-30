@@ -6,7 +6,7 @@ export * from 'expo-router';
 declare module 'expo-router' {
   export namespace ExpoRouter {
     export interface __routes<T extends string = string> extends Record<string, unknown> {
-      StaticRoutes: `/` | `/(Onboarding)` | `/(Onboarding)/OnboardingOne` | `/(Onboarding)/OnboardingThree` | `/(Onboarding)/OnboardingTwo` | `/(auth)` | `/(auth)/Experience` | `/(auth)/Login` | `/(auth)/Register` | `/(auth)/Signup` | `/(verify)` | `/(verify)/Identify` | `/(verify)/ProofResidence` | `/Experience` | `/Identify` | `/Login` | `/OnboardingOne` | `/OnboardingThree` | `/OnboardingTwo` | `/ProofResidence` | `/Register` | `/Signup` | `/_sitemap`;
+      StaticRoutes: `/` | `/(Onboarding)` | `/(Onboarding)/OnboardingOne` | `/(Onboarding)/OnboardingThree` | `/(Onboarding)/OnboardingTwo` | `/(auth)` | `/(auth)/Experience` | `/(auth)/ForgotPassword` | `/(auth)/Login` | `/(auth)/Register` | `/(auth)/ResetPassword` | `/(auth)/Signup` | `/(verify)` | `/(verify)/Identify` | `/(verify)/PassReset` | `/(verify)/ProofResidence` | `/(verify)/VerifyCode` | `/Experience` | `/ForgotPassword` | `/Identify` | `/Login` | `/OnboardingOne` | `/OnboardingThree` | `/OnboardingTwo` | `/PassReset` | `/ProofResidence` | `/Register` | `/ResetPassword` | `/Signup` | `/VerifyCode` | `/_sitemap`;
       DynamicRoutes: never;
       DynamicRouteTemplate: never;
     }

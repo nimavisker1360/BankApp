@@ -79,7 +79,13 @@ const ForgotPassword = () => {
 
             <TouchableOpacity
               className="w-full bg-[#4285F4] py-4 rounded-full items-center"
-              onPress={() => router.push("/(auth)/ResetPassword")}
+              onPress={() => {
+                if (selectedMethod === "sms") {
+                  router.push("/(verify)/VerifyCode");
+                } else if (selectedMethod === "email") {
+                  router.push("/(verify)/PassReset");
+                }
+              }}
             >
               <Text className="text-white text-lg font-semibold">Continue</Text>
             </TouchableOpacity>
