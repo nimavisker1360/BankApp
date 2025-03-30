@@ -119,7 +119,7 @@ const Login = () => {
 
             <TouchableOpacity
               className="mb-4 items-center"
-              onPress={() => console.log("Forgot Password")}
+              onPress={() => router.push("/(auth)/ForgotPassword")}
             >
               <Text className="text-[#4285F4] font-medium">
                 Forgot Password?

@@ -8,6 +8,7 @@ import rafiki from "../assets/images/rafiki.png";
 import user from "../assets/images/user.png";
 import woman from "../assets/images/woman.png";
 import identify from "../assets/images/identify.png";
+import forgotPassword from "../assets/images/ForgotPass.jpg";
 
 export default {
   Kay,
@@ -20,4 +21,5 @@ export default {
   user,
   woman,
   identify,
+  forgotPassword,
 };
