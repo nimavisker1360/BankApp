@@ -46,22 +46,33 @@ const Login = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
       >
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: keyboardVisible ? "flex-start" : "center",
+          }}
           keyboardShouldPersistTaps="handled"
+          className="p-5"
         >
-          <View className="flex-1 p-5 items-center justify-center">
-            <View className="absolute top-10 left-5">
-              <TouchableOpacity onPress={() => router.push("/(auth)/Register")}>
-                <Ionicons name="arrow-back" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
+          <View className="absolute top-10 left-5 z-10">
+            <TouchableOpacity onPress={() => router.push("/(auth)/Register")}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
 
+          <View
+            className={`flex-1 items-center ${
+              keyboardVisible ? "justify-start pt-20" : "justify-center"
+            }`}
+          >
             <View
-              className={`items-center ${keyboardVisible ? "mb-5" : "mb-10"}`}
+              className={`items-center ${keyboardVisible ? "mb-5" : "mb-10"} ${
+                keyboardVisible ? "mt-5" : "mt-16"
+              }`}
             >
-              <Text className="text-3xl font-bold">Login to Your Account</Text>
+              <Text className="text-3xl font-bold">Login to your account</Text>
             </View>
 
             <View className="w-full space-y-4 mb-2">
@@ -89,25 +100,25 @@ const Login = () => {
               </View>
             </View>
 
-            <View className="flex-row items-center w-full mb-6 mt-4">
+            <View className="flex-row items-center w-full mb-4 mt-2">
               <Checkbox
                 value={rememberMe}
                 onValueChange={setRememberMe}
                 color={rememberMe ? "#4285F4" : undefined}
                 className="h-5 w-5 rounded-sm"
               />
-              <Text className="text-base ml-2">Remember me</Text>
+              <Text className=" ml-2 text-[12px]">Remember me</Text>
             </View>
 
             <TouchableOpacity
-              className="w-full bg-[#4285F4] py-3 rounded-full items-center mb-4"
-              onPress={() => console.log("Sign In")}
+              className="w-full bg-[#4285F4] py-3 rounded-full items-center mb-3"
+              onPress={() => router.push("/(auth)/Experience")}
             >
               <Text className="text-white text-lg font-semibold">Login</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              className="mb-6"
+              className="mb-4 items-center"
               onPress={() => console.log("Forgot Password")}
             >
               <Text className="text-[#4285F4] font-medium">
@@ -115,44 +126,49 @@ const Login = () => {
               </Text>
             </TouchableOpacity>
 
-            {!keyboardVisible && (
-              <>
-                <Text className="text-lg mb-6">or continue with</Text>
+            <Text className={`text-lg ${keyboardVisible ? "mb-3" : "mb-6"}`}>
+              or continue with
+            </Text>
 
-                <View className="flex-row w-full justify-evenly mb-10">
-                  <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
-                    <Ionicons name="logo-apple" size={30} color="black" />
-                  </TouchableOpacity>
+            <View
+              className={`flex-row w-full justify-evenly ${
+                keyboardVisible ? "mb-5" : "mb-10"
+              }`}
+            >
+              <TouchableOpacity className="w-24 h-14 border border-gray-100 rounded-xl items-center justify-center">
+                <Ionicons
+                  name="logo-apple"
+                  size={30}
+                  color="black"
+                  onPress={() => router.push("/(auth)/Experience")}
+                />
+              </TouchableOpacity>
 
-                  <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
-                    <Ionicons name="logo-facebook" size={30} color="#4267B2" />
-                  </TouchableOpacity>
+              <TouchableOpacity className="w-24 h-14 border border-gray-100 rounded-xl items-center justify-center">
+                <Ionicons name="logo-facebook" size={30} color="#4267B2" />
+              </TouchableOpacity>
 
-                  <TouchableOpacity className="w-24 h-14 border-[0.5px] border-gray-100 rounded-xl items-center justify-center">
-                    <Image
-                      source={{
-                        uri: "https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png",
-                      }}
-                      className="w-8 h-8"
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </View>
+              <TouchableOpacity className="w-24 h-14 border border-gray-100 rounded-xl items-center justify-center">
+                <Image
+                  source={{
+                    uri: "https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png",
+                  }}
+                  className="w-8 h-8"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
 
-                <View className="flex-row">
-                  <Text className="text-base text-gray-700">
-                    Don't have an account?{" "}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => router.push("/(auth)/Signup")}
-                  >
-                    <Text className="text-base text-[#4285F4] font-medium">
-                      Sign Up
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
+            <View className="flex-row">
+              <Text className="text-base text-gray-700">
+                Don't have an account?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => router.push("/(auth)/Signup")}>
+                <Text className="text-base text-[#4285F4] font-medium">
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
