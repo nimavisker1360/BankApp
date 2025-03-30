@@ -33,7 +33,9 @@ const ProofIdCard = () => {
 
       <View className="flex-row items-center justify-center mt-15 w-full">
         <TouchableOpacity className="w-[90px] h-[90px] rounded-full bg-[#4285F4] justify-center items-center mx-6 mt-12">
-          <View className="w-[80px] h-[80px] rounded-full border-2 border-white" />
+          <View className="w-[80px] h-[80px] rounded-full border-2 border-white justify-center items-center">
+            <Ionicons name="camera" size={40} color="white" />
+          </View>
         </TouchableOpacity>
       </View>
     </View>
