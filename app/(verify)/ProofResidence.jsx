@@ -19,9 +19,9 @@ const ProofResidence = () => {
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({
-    name: "United States of America",
-    code: "us",
-    flag: "https://flagcdn.com/w320/us.png",
+    name: "Turkey",
+    code: "tr",
+    flag: "https://flagcdn.com/w320/tr.png",
   });
 
   // Animation values
