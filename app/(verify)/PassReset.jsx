@@ -5,6 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,66 +18,83 @@ const PassReset = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
+  const handleResetPassword = () => {
+    router.replace("/login");
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Forgot Password</Text>
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.resetIconContainer}>
-          <Ionicons name="lock-open-outline" size={60} color="#2979FF" />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Forgot Password</Text>
         </View>
 
-        <Text style={styles.title}>Enter to Your Email</Text>
+        <View style={styles.content}>
+          <View style={styles.resetIconContainer}>
+            <Ionicons name="lock-open-outline" size={60} color="#2979FF" />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Ionicons
-            name="mail-outline"
-            size={24}
-            color="#888"
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-        </View>
+          <Text style={styles.title}>Enter to Your Email</Text>
 
-        <View style={styles.checkboxContainer}>
+          <View style={styles.inputContainer}>
+            <Ionicons
+              name="mail-outline"
+              size={24}
+              color="#888"
+              style={styles.inputIcon}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </View>
+
+          <View style={styles.checkboxContainer}>
+            <TouchableOpacity
+              style={[styles.checkbox, rememberMe && styles.checkboxChecked]}
+              onPress={() => setRememberMe(!rememberMe)}
+            >
+              {rememberMe && (
+                <Ionicons name="checkmark" size={18} color="#000" />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.checkboxLabel}>Remember me</Text>
+          </View>
+
           <TouchableOpacity
-            style={[styles.checkbox, rememberMe && styles.checkboxChecked]}
-            onPress={() => setRememberMe(!rememberMe)}
+            style={styles.resetButton}
+            onPress={() => router.replace("/Login")}
           >
-            {rememberMe && <Ionicons name="checkmark" size={18} color="#000" />}
+            <Text style={styles.resetButtonText}>Reset Password</Text>
           </TouchableOpacity>
-          <Text style={styles.checkboxLabel}>Remember me</Text>
+
+          <TouchableOpacity
+            style={styles.rememberLink}
+     
+          >
+            <Text style={styles.rememberLinkText}>Remember the password?</Text>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.resetButton}>
-          <Text style={styles.resetButtonText}>Reset Password</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.rememberLink}>
-          <Text style={styles.rememberLinkText}>Remember the password?</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account? </Text>
-        <Link href="/signup" asChild>
-          <TouchableOpacity>
-            <Text style={styles.signUpText}>Sign Up</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
-    </View>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Don't have an account? </Text>
+          <Link href="/signup" asChild>
+            <TouchableOpacity>
+              <Text style={styles.signUpText}>Sign Up</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -82,7 +102,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  scrollContainer: {
+    flexGrow: 1,
     padding: 20,
+    paddingBottom: 40,
   },
   header: {
     flexDirection: "row",
@@ -195,10 +219,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    bottom: 40,
-    left: 0,
-    right: 0,
+    marginTop: 40,
+    paddingVertical: 10,
   },
   footerText: {
     fontSize: 16,
