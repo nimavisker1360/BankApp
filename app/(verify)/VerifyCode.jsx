@@ -16,6 +16,7 @@ const VerifyCode = () => {
   const [code, setCode] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [isResendActive, setIsResendActive] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
 
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
@@ -27,6 +28,7 @@ const VerifyCode = () => {
       }, 1000);
     } else {
       setIsResendActive(true);
+      setIsButtonVisible(true);
     }
 
     return () => clearInterval(interval);
@@ -56,6 +58,7 @@ const VerifyCode = () => {
       setCode(["", "", "", ""]);
       setTimer(60);
       setIsResendActive(false);
+      setIsButtonVisible(false);
 
       // Focus the first input after resending
       inputRefs[0].current.focus();
@@ -79,7 +82,7 @@ const VerifyCode = () => {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-5">
           <View className="absolute top-10 left-5 z-10">
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="arrow-back" size={24} color="black" />
+             
             </TouchableOpacity>
           </View>
 
@@ -108,18 +111,26 @@ const VerifyCode = () => {
 
             <View className="flex-row justify-center items-center mb-12">
               <Text className="text-gray-500">Don't receive code? </Text>
-              <TouchableOpacity
-                onPress={handleResendCode}
-                disabled={!isResendActive}
-              >
-                <Text
-                  className={`font-medium ${
-                    isResendActive ? "text-[#4285F4]" : "text-gray-400"
-                  }`}
+              {isButtonVisible && (
+                <TouchableOpacity
+                  onPress={handleResendCode}
+                  disabled={!isResendActive}
                 >
-                  {isResendActive ? "Resend" : `Resend (${timer}s)`}
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    className={`font-medium ${
+                      isResendActive ? "text-[#4285F4]" : "text-gray-400"
+                    }`}
+                  >
+                    {isResendActive ? (
+                      "Resend"
+                    ) : (
+                      <Text>
+                        Resend <Text className="text-[#4285F4]">{timer}s</Text>
+                      </Text>
+                    )}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
 
             <TouchableOpacity
