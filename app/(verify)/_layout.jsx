@@ -10,7 +10,8 @@ const IdentifyLayout = () => {
       <Stack.Screen name="VerifyCode" options={{ headerShown: false }} />
       <Stack.Screen name="ProofIdCard" options={{ headerShown: false }} />
       <Stack.Screen name="Selfie" options={{ headerShown: false }} />
-   
+      <Stack.Screen name="Profile" options={{ headerShown: false }} />
+    
     </Stack>
   );
 };

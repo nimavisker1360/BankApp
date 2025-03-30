@@ -46,7 +46,8 @@ const Selfie = () => {
         </TouchableOpacity>
 
         <TouchableOpacity className="bg-[#4285F4] py-4 rounded-full w-[45%] items-center">
-          <Text className="text-base font-bold text-white">Continue</Text>
+          <Text className="text-base font-bold text-white" onPress={() => router.push("/Profile")}>Continue</Text>
+          
         </TouchableOpacity>
       </View>
     </Animated.View>
