@@ -6,20 +6,24 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
+  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import CountrySelector from "../../components/CountrySelector";
-
+import { Feather as FeatherIcon } from "@expo/vector-icons";
+import calendarIcon from "../../assets/icons/calendar.png"; // adjust the path as needed
+import DateTimePicker from "@react-native-community/datetimepicker";
 const Profile = () => {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState("12/12/2023");
+  const [showDateOfBirth, setShowDateOfBirth] = useState(false);
+  const [date, setDate] = useState(new Date());
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
     code: "+1",
@@ -30,6 +34,12 @@ const Profile = () => {
   const handleSelectCountry = (country) => {
     setSelectedCountry(country);
   };
+
+  const onChange =(event,selectedDate)=>{
+const currentDate = selectedDate || date;
+setShowDateOfBirth(Platform.OS === "ios");
+setDate(currentDate);
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -47,9 +57,7 @@ const Profile = () => {
           {/* Profile Image */}
           <View className="items-center mb-6 mt-4">
             <View className="relative">
-              <View className="w-32 h-32 rounded-full bg-gray-500 overflow-hidden justify-center items-center">
-             
-              </View>
+              <View className="w-32 h-32 rounded-full bg-gray-500 overflow-hidden justify-center items-center"></View>
               <TouchableOpacity className="absolute bottom-0 right-0 bg-blue-500 w-10 h-10 rounded-full justify-center items-center">
                 <Feather name="edit-2" size={20} color="white" />
               </TouchableOpacity>
@@ -79,16 +87,24 @@ const Profile = () => {
             />
 
             {/* Date Field */}
-            <TouchableOpacity className="bg-gray-50 p-4 rounded-lg flex-row justify-between items-center">
-              <Text
-                className={
-                  date ? "text-black text-base" : "text-gray-500 text-base"
-                }
-              >
-                {date || "Select Date"}
-              </Text>
-              <AntDesign name="calendar" size={24} color="gray" />
+            <TouchableOpacity
+              className="bg-gray-50 p-4 rounded-lg flex-row justify-between items-center"
+              onPress={() => setShowDateOfBirth(true)}
+            >
+              <Image source={calendarIcon} className="w-6 h-6 mr-2" resizeMode="contain" />
+              <Text className="flex-1 text-gray-300 ml-2">
+               {date.toLocaleDateString()} Date of Birth
+                
+                </Text>
             </TouchableOpacity>
+            {showDateOfBirth && (
+              <DateTimePicker
+              value={date}
+              mode="date"
+              display="calendar"
+              onChange={onChange}
+              />
+            )}
 
             {/* Phone Number Field */}
             <View className="flex-row bg-gray-50 rounded-lg overflow-hidden">
