@@ -47,7 +47,7 @@ const Home = () => {
         });
         setCurrentImageIndex(nextIndex);
       }
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [currentImageIndex]);
@@ -55,42 +55,44 @@ const Home = () => {
   return (
     <ScrollView className="flex-1 bg-gray-50 mb-16">
       {/* Services Icons */}
-      <View className="flex-row justify-between px-5 py-6">
-        <View className="items-center">
-          <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
-            <Ionicons name="fast-food-outline" size={28} color="green" />
+      <View className="flex-row justify-evenly px-4 py-5">
+        <View className="items-center w-16">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <Ionicons name="fast-food-outline" size={20} color="green" />
           </View>
-          <Text className="text-xs mt-2 text-center">Ramadan{"\n"}Feast</Text>
-        </View>
-
-        <View className="items-center">
-          <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
-            <Ionicons name="document-text-outline" size={28} color="green" />
-          </View>
-          <Text className="text-xs mt-2 text-center">Announcements</Text>
-        </View>
-
-        <View className="items-center">
-          <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
-            <Ionicons name="globe-outline" size={28} color="green" />
-          </View>
-          <Text className="text-xs mt-2 text-center">
-            International{"\n"}Money Transfer
+          <Text className="text-[10px] mt-1 text-center">
+            Ramadan{"\n"}Feast
           </Text>
         </View>
 
-        <View className="items-center">
-          <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
-            <AntDesign name="creditcard" size={28} color="green" />
+        <View className="items-center w-16">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <Ionicons name="document-text-outline" size={20} color="green" />
           </View>
-          <Text className="text-xs mt-2 text-center">BankApp Card</Text>
+          <Text className="text-[10px] mt-1 text-center">Announcements</Text>
         </View>
 
-        <View className="items-center">
-          <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
-            <FontAwesome5 name="plane" size={25} color="green" />
+        <View className="items-center w-16">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <Ionicons name="globe-outline" size={20} color="green" />
           </View>
-          <Text className="text-xs mt-2 text-center">
+          <Text className="text-[10px] mt-1 text-center h-8">
+            International{"\n"}Transfer
+          </Text>
+        </View>
+
+        <View className="items-center w-16">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <AntDesign name="creditcard" size={20} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">BankApp Card</Text>
+        </View>
+
+        <View className="items-center w-16">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <FontAwesome5 name="plane" size={18} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">
             Travel{"\n"}Privilege
           </Text>
         </View>
@@ -135,18 +137,19 @@ const Home = () => {
       </View>
 
       {/* Dots Indicator */}
-      <View className="flex-row justify-center py-4">
-        <View className="h-2 w-2 rounded-full bg-black mx-1" />
-        <View className="h-2 w-2 rounded-full bg-gray-300 mx-1" />
-        <View className="h-2 w-2 rounded-full bg-gray-300 mx-1" />
-        <View className="h-2 w-2 rounded-full bg-gray-300 mx-1" />
-        <View className="h-2 w-2 rounded-full bg-gray-300 mx-1" />
-        <View className="h-2 w-2 rounded-full bg-gray-300 mx-1" />
-      </View>
 
       {/* Monthly Summary */}
-      <View className="px-4 py-3 bg-white border-t border-gray-100">
-        <View className="flex-row items-center">
+      <View
+        className="mx-4 bg-white rounded-xl shadow-lg"
+        style={{
+          shadowColor: "#000",
+          shadowOffset: { width: 4, height: 6 },
+          shadowOpacity: 0.3,
+          shadowRadius: 6,
+          elevation: 8,
+        }}
+      >
+        <View className="p-4 flex-row items-center">
           <View className="h-12 w-12 bg-orange-100 rounded-md items-center justify-center mr-4">
             <Ionicons name="document-text-outline" size={24} color="#f97316" />
           </View>
@@ -290,7 +293,7 @@ const Home = () => {
                   flex: 1,
                   height: 300,
                   width: width - 40,
-                  borderRadius: 10,
+                  borderRadius: 20,
                 }}
                 resizeMode="cover"
               />
@@ -319,9 +322,9 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <View className="items-end">
-            <Image 
-              source={require("../../assets/images/gift.png")} 
-              className="h-[150px] w-[150px]" 
+            <Image
+              source={require("../../assets/images/gift.png")}
+              className="h-[150px] w-[150px]"
               resizeMode="contain"
             />
           </View>
