@@ -1,11 +1,39 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Modal,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const FingerScanner = () => {
   const router = useRouter();
+  const [showCongratulation, setShowCongratulation] = useState(false);
+  const slideAnim = new Animated.Value(400);
+
+  useEffect(() => {
+    if (showCongratulation) {
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [showCongratulation]);
+
+  const handleContinue = () => {
+    setShowCongratulation(true);
+  };
+
+  const handleFinalContinue = () => {
+    router.push("/(tabs)");
+  };
+
   return (
     <View className="flex-1 bg-gray-50 p-6">
       <StatusBar style="dark" />
@@ -54,7 +82,10 @@ const FingerScanner = () => {
 
       {/* Buttons */}
       <View className="w-full mt-10">
-        <TouchableOpacity className="bg-blue-600 py-4 px-6 rounded-xl w-full items-center">
+        <TouchableOpacity
+          className="bg-blue-600 py-4 px-6 rounded-xl w-full items-center"
+          onPress={handleContinue}
+        >
           <Text className="text-white font-semibold text-lg">Continue</Text>
         </TouchableOpacity>
 
@@ -64,6 +95,55 @@ const FingerScanner = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Congratulation Modal */}
+      <Modal
+        visible={showCongratulation}
+        transparent={true}
+        animationType="fade"
+        statusBarTranslucent
+      >
+        <View className="flex-1 bg-black/70 justify-center items-center p-6">
+          <Animated.View
+            className="bg-white rounded-3xl p-8 w-full items-center shadow-lg"
+            style={{
+              transform: [{ translateY: slideAnim }],
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 8,
+              elevation: 5,
+            }}
+          >
+            {/* Congratulation Image */}
+            <View className="mb-6">
+              <Image
+                source={require("../../assets/images/congragulation.png")}
+                style={{ width: 160, height: 160 }}
+                resizeMode="contain"
+              />
+            </View>
+
+            {/* Congratulation Text */}
+            <Text className="text-3xl font-bold text-center text-blue-600 mb-4">
+              Congratulations!
+            </Text>
+
+            <Text className="text-gray-700 text-center mb-8 text-base">
+              Your account is ready to use. You will be redirected to the Home
+              page in a few seconds.
+            </Text>
+
+            {/* Continue Button */}
+            <TouchableOpacity
+              className="bg-blue-600 py-4 px-6 rounded-full w-full items-center"
+              onPress={handleFinalContinue}
+            >
+              <Text className="text-white font-semibold text-lg">Continue</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Modal>
     </View>
   );
 };
