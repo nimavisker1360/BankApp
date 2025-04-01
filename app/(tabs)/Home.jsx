@@ -7,7 +7,7 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Ionicons,
   FontAwesome5,
@@ -35,6 +35,22 @@ const Home = () => {
     const index = Math.round(scrollPosition / width);
     setCurrentImageIndex(index);
   };
+
+  // Auto-scroll functionality every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (flatListRef.current) {
+        const nextIndex = (currentImageIndex + 1) % images.length;
+        flatListRef.current.scrollToIndex({
+          index: nextIndex,
+          animated: true,
+        });
+        setCurrentImageIndex(nextIndex);
+      }
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [currentImageIndex]);
 
   return (
     <ScrollView className="flex-1 bg-gray-50 mb-16">
@@ -258,24 +274,36 @@ const Home = () => {
       </View>
 
       {/* Cashback Image Slider */}
-      <View className="my-3">
+      <View className="my-3 px-4">
         <FlatList
           ref={flatListRef}
           data={images}
           horizontal
-          pagingEnabled
+          pagingEnabled={false}
           showsHorizontalScrollIndicator={false}
           onScroll={handleScroll}
           renderItem={({ item }) => (
-            <View style={{ width }}>
+            <View style={{ width: width - 20, marginRight: 2 }}>
               <Image
                 source={item}
-                style={{ flex: 1, height: 300, width }}
+                style={{
+                  flex: 1,
+                  height: 300,
+                  width: width - 40,
+                  borderRadius: 10,
+                }}
                 resizeMode="cover"
               />
             </View>
           )}
           keyExtractor={(_, index) => index.toString()}
+          snapToInterval={width - 25}
+          decelerationRate="fast"
+          getItemLayout={(data, index) => ({
+            length: width - 20,
+            offset: (width - 20) * index,
+            index,
+          })}
         />
       </View>
 
