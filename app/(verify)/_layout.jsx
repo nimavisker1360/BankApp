@@ -13,6 +13,7 @@ const IdentifyLayout = () => {
       <Stack.Screen name="Profile" options={{ headerShown: false }} />
       <Stack.Screen name="NewPin" options={{ headerShown: false }} />
       <Stack.Screen name="Pointer" options={{ headerShown: false }} />
+      <Stack.Screen name="Congratulation" options={{ headerShown: false }} />
 
     
 
