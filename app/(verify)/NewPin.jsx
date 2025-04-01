@@ -108,7 +108,10 @@ const NewPin = () => {
             pin.every((digit) => digit !== "") ? "bg-blue-500" : "bg-blue-300"
           }`}
         >
-          <Text className="text-white text-center font-psemibold text-lg">
+          <Text
+            className="text-white text-center font-psemibold text-lg"
+            onPress={() => router.push("/Pointer")}
+          >
             Continue
           </Text>
         </TouchableOpacity>

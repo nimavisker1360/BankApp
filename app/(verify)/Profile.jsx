@@ -136,7 +136,7 @@ const Profile = () => {
             </TouchableOpacity>
             <TouchableOpacity
               className="bg-blue-500 rounded-full py-4 px-8 flex-1 ml-2 items-center"
-              onPress={() => router.push("/NewPin")}
+              onPress={() => router.push("/Pointer")}
             >
               <Text className="text-white font-semibold text-base">
                 Continue
