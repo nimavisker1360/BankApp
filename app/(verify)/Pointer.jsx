@@ -113,7 +113,7 @@ const Pointer = () => {
 
       <TouchableOpacity
         className="bg-[#4285F4] px-8 py-3 rounded-xl mt-8"
-        onPress={() => router.push("/FingerScanner")}
+        onPress={() => router.push("/Loading")}
       >
         <Text className="text-white font-bold">Continue</Text>
       </TouchableOpacity>

@@ -14,7 +14,7 @@ const IdentifyLayout = () => {
       <Stack.Screen name="NewPin" options={{ headerShown: false }} />
       <Stack.Screen name="Pointer" options={{ headerShown: false }} />
 
-      <Stack.Screen name="FingerScanner" options={{ headerShown: false }} />
+    
 
     
 
