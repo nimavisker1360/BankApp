@@ -1,5 +1,13 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Dimensions,
+} from "react-native";
+import React, { useState, useRef } from "react";
 import {
   Ionicons,
   FontAwesome5,
@@ -10,7 +18,24 @@ import {
   Feather,
 } from "@expo/vector-icons";
 
+const { width } = Dimensions.get("window");
+
 const Home = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [
+    require("../../assets/images/spotify.png"),
+    require("../../assets/images/watson.png"),
+    require("../../assets/images/Burgerking.png"),
+  ];
+
+  const flatListRef = useRef(null);
+
+  const handleScroll = (event) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / width);
+    setCurrentImageIndex(index);
+  };
+
   return (
     <ScrollView className="flex-1 bg-gray-50 mb-16">
       {/* Services Icons */}
@@ -178,6 +203,100 @@ const Home = () => {
           <TouchableOpacity>
             <Ionicons name="arrow-forward" size={18} color="gray" />
           </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Cashback Earnings Card */}
+      <View className="mx-4 my-3 bg-white p-5 rounded-xl shadow-sm">
+        <View className="flex-row justify-between">
+          <View>
+            <Text className="text-gray-500">Earned this month</Text>
+            <Text className="text-3xl font-bold mt-1">₺0,00</Text>
+          </View>
+          <View className="items-end">
+            <Text className="text-gray-500">More to earn this month</Text>
+            <Text className="text-3xl font-bold mt-1">₺1.975,00</Text>
+          </View>
+        </View>
+        <View className="mt-3 flex-row items-center">
+          <View className="h-10 w-10 rounded-full bg-white border border-gray-200 items-center justify-center">
+            <Text className="text-xl font-bold">P</Text>
+          </View>
+          <View className="h-1 flex-1 bg-gray-200 ml-2" />
+        </View>
+      </View>
+
+      {/* Cashback Promo Card */}
+      <View className="mx-4 my-3 bg-white p-5 rounded-xl shadow-sm">
+        <View className="flex-row">
+          <View className="mr-5">
+            <View className="flex-row items-center mb-2">
+              <View>
+                <Text className="mt-2 font-bold text-lg">Spring</Text>
+                <Text className="font-bold text-lg">2025</Text>
+              </View>
+              <View className="h-14 w-14 rounded-full bg-green-100 items-center justify-center ml-3">
+                <Ionicons name="leaf-outline" size={28} color="#10b981" />
+              </View>
+            </View>
+
+            <View className="mt-4 bg-green-100 py-2 px-4 rounded-lg">
+              <Text className="text-2xl font-bold">₺1.975</Text>
+            </View>
+            <Text className="mt-2 text-lg">earn instant cash</Text>
+          </View>
+
+          <View className="flex-1 justify-end items-end">
+            <Image
+              source={require("../../assets/images/poster01.png")}
+              className="h-56 w-48 absolute right-0 top-0"
+              resizeMode="contain"
+            />
+            {/*  add icons */}
+          </View>
+        </View>
+      </View>
+
+      {/* Cashback Image Slider */}
+      <View className="my-3">
+        <FlatList
+          ref={flatListRef}
+          data={images}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          renderItem={({ item }) => (
+            <View style={{ width }}>
+              <Image
+                source={item}
+                style={{ flex: 1, height: 300, width }}
+                resizeMode="cover"
+              />
+            </View>
+          )}
+          keyExtractor={(_, index) => index.toString()}
+        />
+      </View>
+
+      {/* Invite Friends Card */}
+      <View className="mx-4 my-3 mb-10 bg-pink-100 p-5 rounded-xl">
+        <View className="flex-row justify-between">
+          <View className="w-3/5">
+            <Text className="text-2xl font-bold">
+              Invite Your Friend, Win Together
+            </Text>
+            <TouchableOpacity className="mt-4">
+              <Text className="text-lg underline">Detailed Information</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="items-end">
+            {/* <Image 
+              source={require("../../assets/images/gift.png")} 
+              className="h-28 w-28" 
+              resizeMode="contain"
+            /> */}
+          </View>
         </View>
       </View>
     </ScrollView>
