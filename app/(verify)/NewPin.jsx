@@ -1,204 +1,120 @@
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
-  Pressable,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useState, useRef } from "react";
 import { useRouter } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
 
-export default function NewPin() {
-  const [pin, setPin] = useState("");
+const NewPin = () => {
   const router = useRouter();
+  const [pin, setPin] = useState(["", "", "", ""]);
+  const [activeInput, setActiveInput] = useState(0);
+  const inputRefs = useRef([]);
 
-  const handleNumberPress = (number) => {
-    if (pin.length < 4) {
-      setPin((prev) => prev + number);
+  const handlePinChange = (value, index) => {
+    if (value === "" || /^\d+$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to next input if current one is filled
+      if (value !== "" && index < 3) {
+        setActiveInput(index + 1);
+        inputRefs.current[index + 1]?.focus();
+      }
     }
   };
 
-  const handleDelete = () => {
-    setPin((prev) => prev.slice(0, -1));
+  const handleBackspace = () => {
+    if (activeInput > 0) {
+      const newPin = [...pin];
+      newPin[activeInput - 1] = "";
+      setPin(newPin);
+      setActiveInput(activeInput - 1);
+      inputRefs.current[activeInput - 1]?.focus();
+    } else if (activeInput === 0 && pin[0] !== "") {
+      const newPin = [...pin];
+      newPin[0] = "";
+      setPin(newPin);
+    }
   };
 
-  const handleContinue = () => {
-    if (pin.length === 4) {
-      // Save PIN logic here
-      router.push("/(app)");
+  const onContinue = () => {
+    if (pin.every((digit) => digit !== "")) {
+      // Handle PIN confirmation
+      console.log("PIN set:", pin.join(""));
+      // Navigate to next screen
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 bg-white"
+    >
+      <View className="flex-1 px-4">
+        <View className="mt-10 mb-6">
+          <TouchableOpacity onPress={() => router.back()} className="p-1">
+            <AntDesign name="arrowleft" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <View className="items-center mb-16">
+          <Text className="text-3xl font-psemibold text-black-100">
+            Create New PIN
+          </Text>
+          <Text className="text-base text-center mt-2 text-gray-300">
+            Add a PIN number to make your account more secure.
+          </Text>
+        </View>
+
+        <View className="flex-row justify-center space-x-4 mb-8">
+          {pin.map((digit, index) => (
+            <TouchableOpacity
+              key={index}
+              className={`w-14 h-14 border rounded-xl justify-center items-center ${
+                activeInput === index
+                  ? "border-blue-500 border-2"
+                  : "border-gray-200"
+              }`}
+              onPress={() => {
+                setActiveInput(index);
+                inputRefs.current[index]?.focus();
+              }}
+            >
+              <TextInput
+                ref={(el) => (inputRefs.current[index] = el)}
+                value={digit}
+                onChangeText={(value) => handlePinChange(value, index)}
+                keyboardType="numeric"
+                maxLength={1}
+                className="text-2xl font-pmedium text-black w-full h-full text-center"
+                secureTextEntry={true}
+                autoFocus={index === 0 && activeInput === 0}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+
         <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
+          onPress={onContinue}
+          disabled={!pin.every((digit) => digit !== "")}
+          className={`py-4 rounded-full ${
+            pin.every((digit) => digit !== "") ? "bg-blue-500" : "bg-blue-300"
+          }`}
         >
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Text className="text-white text-center font-psemibold text-lg">
+            Continue
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Create New PIN</Text>
       </View>
-
-      <Text style={styles.subtitle}>
-        Add a PIN number to make your account more secure.
-      </Text>
-
-      <View style={styles.pinContainer}>
-        {[0, 1, 2, 3].map((index) => (
-          <View
-            key={index}
-            style={[styles.pinBox, index < pin.length && styles.pinBoxFilled]}
-          >
-            {index < pin.length && <Text style={styles.pinDot}>|</Text>}
-          </View>
-        ))}
-      </View>
-
-      <TouchableOpacity
-        style={[
-          styles.continueButton,
-          pin.length === 4 && styles.continueButtonActive,
-        ]}
-        onPress={handleContinue}
-        disabled={pin.length !== 4}
-      >
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
-
-      <View style={styles.keypadContainer}>
-        <View style={styles.keypadRow}>
-          {[1, 2, 3].map((num) => (
-            <TouchableOpacity
-              key={num}
-              style={styles.keypadButton}
-              onPress={() => handleNumberPress(num.toString())}
-            >
-              <Text style={styles.keypadButtonText}>{num}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.keypadRow}>
-          {[4, 5, 6].map((num) => (
-            <TouchableOpacity
-              key={num}
-              style={styles.keypadButton}
-              onPress={() => handleNumberPress(num.toString())}
-            >
-              <Text style={styles.keypadButtonText}>{num}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.keypadRow}>
-          {[7, 8, 9].map((num) => (
-            <TouchableOpacity
-              key={num}
-              style={styles.keypadButton}
-              onPress={() => handleNumberPress(num.toString())}
-            >
-              <Text style={styles.keypadButtonText}>{num}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.keypadRow}>
-          <View style={styles.keypadButton} />
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => handleNumberPress("0")}
-          >
-            <Text style={styles.keypadButtonText}>0</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.keypadButton} onPress={handleDelete}>
-            <Ionicons name="backspace-outline" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    padding: 20,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  backButton: {
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#555",
-    textAlign: "center",
-    marginBottom: 40,
-    marginTop: 10,
-  },
-  pinContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 40,
-  },
-  pinBox: {
-    width: 60,
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    margin: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
-  },
-  pinBoxFilled: {
-    borderColor: "#2196F3",
-    backgroundColor: "white",
-  },
-  pinDot: {
-    fontSize: 24,
-    color: "#2196F3",
-  },
-  continueButton: {
-    backgroundColor: "#2196F3",
-    paddingVertical: 15,
-    borderRadius: 30,
-    alignItems: "center",
-    marginBottom: 40,
-  },
-  continueButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  keypadContainer: {
-    marginTop: "auto",
-  },
-  keypadRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  keypadButton: {
-    width: "30%",
-    height: 70,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    borderRadius: 10,
-  },
-  keypadButtonText: {
-    fontSize: 28,
-    fontWeight: "bold",
-  },
-});
+export default NewPin;
