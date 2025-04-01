@@ -19,7 +19,7 @@ const TabsLayout = () => {
                   Nima Bagheri Tonkaboni
                 </Text>
                 <View className="flex-row items-center justify-center">
-                  <Text className="text-gray-500">Papara No: </Text>
+                  <Text className="text-gray-500">BankApp No: </Text>
                   <Text className="font-semibold">1658638191</Text>
                 </View>
               </View>
