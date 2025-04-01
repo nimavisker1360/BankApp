@@ -59,10 +59,10 @@ const TabsLayout = () => {
         <View className="items-center w-1/5">
           <MaterialIcons name="qr-code-scanner" size={22} color="gray" />
           <Text
-            style={{ fontSize: 9 }}
+            style={{ fontSize: 7 }}
             className="mt-1 text-gray-500 text-center"
           >
-            QR{"\n"}Transactions
+            QR Transactions
           </Text>
         </View>
 
@@ -72,7 +72,7 @@ const TabsLayout = () => {
             style={{ fontSize: 9 }}
             className="mt-1 text-gray-500 text-center"
           >
-            Money{"\n"}Transfer
+            Money Transfer
           </Text>
         </View>
 
@@ -89,7 +89,7 @@ const TabsLayout = () => {
             style={{ fontSize: 9 }}
             className="mt-1 text-gray-500 text-center"
           >
-            Papara{"\n"}Card
+            ABank Card
           </Text>
         </View>
       </View>

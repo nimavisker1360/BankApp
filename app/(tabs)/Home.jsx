@@ -319,11 +319,11 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <View className="items-end">
-            {/* <Image 
+            <Image 
               source={require("../../assets/images/gift.png")} 
-              className="h-28 w-28" 
+              className="h-[150px] w-[150px]" 
               resizeMode="contain"
-            /> */}
+            />
           </View>
         </View>
       </View>
