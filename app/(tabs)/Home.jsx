@@ -12,7 +12,7 @@ import {
 
 const Home = () => {
   return (
-    <ScrollView className="flex-1 bg-gray-50">
+    <ScrollView className="flex-1 bg-gray-50 mb-16">
       {/* Services Icons */}
       <View className="flex-row justify-between px-5 py-6">
         <View className="items-center">
@@ -42,7 +42,7 @@ const Home = () => {
           <View className="h-16 w-16 rounded-full border border-gray-200 items-center justify-center bg-white">
             <AntDesign name="creditcard" size={28} color="green" />
           </View>
-          <Text className="text-xs mt-2 text-center">Papara Card</Text>
+          <Text className="text-xs mt-2 text-center">BankApp Card</Text>
         </View>
 
         <View className="items-center">
@@ -179,34 +179,6 @@ const Home = () => {
             <Ionicons name="arrow-forward" size={18} color="gray" />
           </TouchableOpacity>
         </View>
-      </View>
-
-      {/* Bottom Navigation */}
-      <View className="flex-row justify-between items-center py-4 px-6 border-t border-gray-200 bg-white mt-6">
-        <TouchableOpacity className="items-center">
-          <Ionicons name="home" size={24} color="black" />
-          <Text className="text-xs mt-1">Home</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="items-center">
-          <MaterialIcons name="qr-code-scanner" size={24} color="gray" />
-          <Text className="text-xs mt-1 text-gray-500">QR Transactions</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="items-center">
-          <Ionicons name="paper-plane-outline" size={24} color="gray" />
-          <Text className="text-xs mt-1 text-gray-500">Money Transfer</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="items-center">
-          <AntDesign name="creditcard" size={24} color="gray" />
-          <Text className="text-xs mt-1 text-gray-500">Payments</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="items-center">
-          <MaterialIcons name="credit-card" size={24} color="gray" />
-          <Text className="text-xs mt-1 text-gray-500">Papara Card</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
