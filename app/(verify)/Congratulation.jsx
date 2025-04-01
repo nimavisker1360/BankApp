@@ -6,14 +6,14 @@ const Page = () => {
   useEffect(() => {
     // Auto redirect after a few seconds (optional)
     const timer = setTimeout(() => {
-      router.replace("/(auth)/Login");
+      router.replace("/NewPin");
     }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
   const handleContinue = () => {
-    router.replace("/(auth)/Login");
+    router.replace("/NewPin");
   };
 
   return (

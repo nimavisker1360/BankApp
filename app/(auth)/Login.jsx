@@ -112,7 +112,7 @@ const Login = () => {
 
             <TouchableOpacity
               className="w-full bg-[#4285F4] py-3 rounded-full items-center mb-3"
-              onPress={() => router.push("/(auth)/Experience")}
+              onPress={() => router.push("/(tabs)/Home")}
             >
               <Text className="text-white text-lg font-semibold">Login</Text>
             </TouchableOpacity>

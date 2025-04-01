@@ -57,11 +57,9 @@ const NewPin = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 bg-white"
     >
-      <View className="flex-1 px-4">
-        <View className="mt-10 mb-6">
-          <TouchableOpacity onPress={() => router.back()} className="p-1">
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
+      <View className="flex-1 px-4 mt-10 justify-center">
+        <View className="">
+         
         </View>
 
         <View className="items-center mb-16">
@@ -110,7 +108,7 @@ const NewPin = () => {
         >
           <Text
             className="text-white text-center font-psemibold text-lg"
-            onPress={() => router.push("/Pointer")}
+            onPress={() => router.push("/(tabs)/Home")}
           >
             Continue
           </Text>
