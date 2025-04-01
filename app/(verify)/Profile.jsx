@@ -57,11 +57,11 @@ const Profile = () => {
           {/* Profile Image */}
           <View className="items-center mb-6 mt-4">
             <View className="relative">
-              <View className="w-32 h-32 rounded-full bg-gray-100 overflow-hidden justify-center items-center">
-                <Ionicons name="person" size={60} color="#6B7280" />
+              <View className="w-32 h-32 rounded-full bg-[#475569] overflow-hidden justify-center items-center">
+                <View className="w-20 h-20 bg-[#E2E8F0] rounded-full" />
               </View>
-              <TouchableOpacity className="absolute bottom-0 right-0 bg-blue-500 w-10 h-10 rounded-full justify-center items-center">
-                <Feather name="edit-2" size={20} color="white" />
+              <TouchableOpacity className="absolute bottom-0 right-0 bg-[#2563EB] w-10 h-10 rounded-full justify-center items-center">
+                <FeatherIcon name="edit-2" size={20} color="white" />
               </TouchableOpacity>
             </View>
           </View>
@@ -134,7 +134,10 @@ const Profile = () => {
                 Skip
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-blue-500 rounded-full py-4 px-8 flex-1 ml-2 items-center">
+            <TouchableOpacity
+              className="bg-blue-500 rounded-full py-4 px-8 flex-1 ml-2 items-center"
+              onPress={() => router.push("/NewPin")}
+            >
               <Text className="text-white font-semibold text-base">
                 Continue
               </Text>
