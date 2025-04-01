@@ -26,20 +26,20 @@ const Profile = () => {
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
-    code: "+1",
-    name: "United States",
-    flag: "🇺🇸",
+    code: "+90",
+    name: "Turkey",
+    flag: "🇹🇷",
   });
 
   const handleSelectCountry = (country) => {
     setSelectedCountry(country);
   };
 
-  const onChange =(event,selectedDate)=>{
-const currentDate = selectedDate || date;
-setShowDateOfBirth(Platform.OS === "ios");
-setDate(currentDate);
-  }
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDateOfBirth(Platform.OS === "ios");
+    setDate(currentDate);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -57,7 +57,9 @@ setDate(currentDate);
           {/* Profile Image */}
           <View className="items-center mb-6 mt-4">
             <View className="relative">
-              <View className="w-32 h-32 rounded-full bg-gray-500 overflow-hidden justify-center items-center"></View>
+              <View className="w-32 h-32 rounded-full bg-gray-100 overflow-hidden justify-center items-center">
+                <Ionicons name="person" size={60} color="#6B7280" />
+              </View>
               <TouchableOpacity className="absolute bottom-0 right-0 bg-blue-500 w-10 h-10 rounded-full justify-center items-center">
                 <Feather name="edit-2" size={20} color="white" />
               </TouchableOpacity>
@@ -91,18 +93,21 @@ setDate(currentDate);
               className="bg-gray-50 p-4 rounded-lg flex-row justify-between items-center"
               onPress={() => setShowDateOfBirth(true)}
             >
-              <Image source={calendarIcon} className="w-6 h-6 mr-2" resizeMode="contain" />
+              <Image
+                source={calendarIcon}
+                className="w-6 h-6 mr-2"
+                resizeMode="contain"
+              />
               <Text className="flex-1 text-gray-300 ml-2">
-               {date.toLocaleDateString()} Date of Birth
-                
-                </Text>
+                {date.toLocaleDateString()} Date of Birth
+              </Text>
             </TouchableOpacity>
             {showDateOfBirth && (
               <DateTimePicker
-              value={date}
-              mode="date"
-              display="calendar"
-              onChange={onChange}
+                value={date}
+                mode="date"
+                display="calendar"
+                onChange={onChange}
               />
             )}
 
