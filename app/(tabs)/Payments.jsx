@@ -263,7 +263,6 @@ const Payments = () => {
               />
             }
             title="Electricity"
-           
           />
 
           <PaymentCategoryItem
