@@ -55,8 +55,12 @@ const Home = () => {
   return (
     <ScrollView className="flex-1 bg-gray-50 mb-16">
       {/* Services Icons */}
-      <View className="flex-row justify-evenly px-4 py-5">
-        <View className="items-center w-16">
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className="px-4 py-5"
+      >
+        <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
             <Ionicons name="fast-food-outline" size={20} color="green" />
           </View>
@@ -65,14 +69,14 @@ const Home = () => {
           </Text>
         </View>
 
-        <View className="items-center w-16">
+        <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
             <Ionicons name="document-text-outline" size={20} color="green" />
           </View>
           <Text className="text-[10px] mt-1 text-center">Announcements</Text>
         </View>
 
-        <View className="items-center w-16">
+        <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
             <Ionicons name="globe-outline" size={20} color="green" />
           </View>
@@ -81,14 +85,14 @@ const Home = () => {
           </Text>
         </View>
 
-        <View className="items-center w-16">
+        <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
             <AntDesign name="creditcard" size={20} color="green" />
           </View>
           <Text className="text-[10px] mt-1 text-center">BankApp Card</Text>
         </View>
 
-        <View className="items-center w-16">
+        <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
             <FontAwesome5 name="plane" size={18} color="green" />
           </View>
@@ -96,7 +100,53 @@ const Home = () => {
             Travel{"\n"}Privilege
           </Text>
         </View>
-      </View>
+
+        {/* New icons from the image */}
+        <View className="items-center w-16 mx-2">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <FontAwesome5 name="id-card" size={18} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">
+            Verified{"\n"}Account
+          </Text>
+        </View>
+
+        <View className="items-center w-16 mx-2">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <MaterialIcons name="savings" size={20} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">
+            Savings{"\n"}Account
+          </Text>
+        </View>
+
+        <View className="items-center w-16 mx-2">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <MaterialIcons name="school" size={20} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">{"<"}18</Text>
+        </View>
+
+        <View className="items-center w-16 mx-2">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <FontAwesome name="calendar" size={18} color="green" />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">
+            Monthly{"\n"}Summary
+          </Text>
+        </View>
+
+        <View className="items-center w-16 mx-2">
+          <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
+            <MaterialCommunityIcons
+              name="bank-transfer"
+              size={20}
+              color="green"
+            />
+          </View>
+          <Text className="text-[10px] mt-1 text-center">Payment</Text>
+        </View>
+      </ScrollView>
 
       {/* Account Card - Main section */}
       <View className="bg-white p-5">
