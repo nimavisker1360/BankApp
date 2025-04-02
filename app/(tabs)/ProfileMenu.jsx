@@ -20,10 +20,12 @@ import Animated, {
   runOnJS,
   Easing,
 } from "react-native-reanimated";
+import { useRouter } from "expo-router";
 
 const ProfileMenu = ({ visible, onClose }) => {
   const { height } = Dimensions.get("window");
   const translateY = useSharedValue(height);
+  const router = useRouter();
 
   const handleDelayedClose = () => {
     setTimeout(() => {
@@ -77,6 +79,15 @@ const ProfileMenu = ({ visible, onClose }) => {
       top: 0,
     };
   });
+
+  const handleMenuItemPress = (id) => {
+    if (id === "signout") {
+      onClose();
+      router.push("/NewPin");
+    } else {
+      onClose();
+    }
+  };
 
   const menuItems = [
     {
@@ -136,8 +147,9 @@ const ProfileMenu = ({ visible, onClose }) => {
     },
     {
       id: "signout",
-      icon: <Ionicons name="log-out-outline" size={24} color="black" />,
+      icon: <Ionicons name="log-out-outline" size={24} color="red" />,
       title: "Sign out",
+      textColor: "text-red-500",
     },
   ];
 
@@ -159,10 +171,16 @@ const ProfileMenu = ({ visible, onClose }) => {
                     <TouchableOpacity
                       key={item.id}
                       className="flex-row items-center px-6 py-4 border-b border-gray-100"
-                      onPress={() => onClose()}
+                      onPress={() => handleMenuItemPress(item.id)}
                     >
                       <View className="w-8">{item.icon}</View>
-                      <Text className="text-lg ml-4 flex-1">{item.title}</Text>
+                      <Text
+                        className={`text-lg ml-4 flex-1 ${
+                          item.textColor || ""
+                        }`}
+                      >
+                        {item.title}
+                      </Text>
                       {item.rightElement && item.rightElement}
                     </TouchableOpacity>
                   ))}
