@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, Modal, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, Modal, TouchableOpacity, Dimensions } from "react-native";
 import {
   Ionicons,
   MaterialIcons,
@@ -18,17 +18,41 @@ import Animated, {
   useSharedValue,
   withTiming,
   runOnJS,
+  Easing,
 } from "react-native-reanimated";
 
 const HamburgerMenu = ({ visible, onClose }) => {
-  const translateY = useSharedValue(0);
+  const { height } = Dimensions.get("window");
+
+  // Initialize at full height (off-screen)
+  const translateY = useSharedValue(height);
+
+  // Helper function for delayed close
+  const handleDelayedClose = () => {
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  };
+
+  // Animate to full open position when visible changes to true
+  useEffect(() => {
+    if (visible) {
+      // Slide up to fully show the menu (with a small margin from top)
+      translateY.value = withTiming(0, {
+        duration: 350,
+        easing: Easing.out(Easing.cubic),
+      });
+    } else {
+      translateY.value = height;
+    }
+  }, [visible, height]);
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startY = translateY.value;
     },
     onActive: (event, ctx) => {
-      // Only allow downward swipes
+      // Only allow downward swipes (to close)
       if (event.translationY > 0) {
         translateY.value = ctx.startY + event.translationY;
       }
@@ -36,14 +60,20 @@ const HamburgerMenu = ({ visible, onClose }) => {
     onEnd: (event) => {
       // If swiped down enough, close the menu
       if (event.translationY > 100) {
-        translateY.value = withTiming(10, {
-          duration: 100,
+        // Close smoothly with custom easing
+        translateY.value = withTiming(height, {
+          duration: 350,
+          easing: Easing.out(Easing.cubic),
         });
-        runOnJS(onClose)();
-      } else {
-        // Otherwise, snap back to original position
+
+        // Use runOnJS with the helper function
+        runOnJS(handleDelayedClose)();
+      }
+      // Otherwise, return to fully open position
+      else {
         translateY.value = withTiming(0, {
           duration: 300,
+          easing: Easing.out(Easing.cubic),
         });
       }
     },
@@ -52,6 +82,11 @@ const HamburgerMenu = ({ visible, onClose }) => {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: translateY.value }],
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: 0,
     };
   });
 
@@ -131,14 +166,10 @@ const HamburgerMenu = ({ visible, onClose }) => {
       onRequestClose={onClose}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View className="flex-1 bg-black/50 justify-end">
+        <View className="flex-1 bg-black/50">
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={animatedStyle}>
-              <Animatable.View
-                animation="slideInUp"
-                duration={300}
-                className="bg-white rounded-t-3xl"
-              >
+              <View className="bg-white rounded-t-3xl absolute bottom-0 left-0 right-0">
                 <View className="w-16 h-1 bg-gray-300 rounded-full self-center my-2"></View>
                 <View>
                   {menuItems.map((item) => (
@@ -164,12 +195,12 @@ const HamburgerMenu = ({ visible, onClose }) => {
 
                 <View className="py-4 items-center"></View>
                 <TouchableOpacity
-                  className="bg-black py-4 mx-6 mt-4 mb-2 rounded-2xl items-center"
+                  className="bg-black py-4 mx-6 mt-4 mb-6 rounded-2xl items-center"
                   onPress={onClose}
                 >
                   <Text className="text-white text-lg font-medium">Cancel</Text>
                 </TouchableOpacity>
-              </Animatable.View>
+              </View>
             </Animated.View>
           </PanGestureHandler>
         </View>
