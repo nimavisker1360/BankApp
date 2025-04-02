@@ -17,12 +17,14 @@ import {
   FontAwesome,
   Feather,
 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
 const Home = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const router = useRouter();
   const images = [
     require("../../assets/images/spotify.png"),
     require("../../assets/images/watson.png"),
@@ -187,7 +189,10 @@ const Home = () => {
             </View>
 
             <View className="flex-row">
-              <TouchableOpacity className="flex-1 mr-2 border border-gray-300 rounded-lg py-2 flex-row items-center justify-center">
+              <TouchableOpacity
+                className="flex-1 mr-2 border border-gray-300 rounded-lg py-2 flex-row items-center justify-center"
+                onPress={() => router.push("/(tabs)/DepositWithdrawModal")}
+              >
                 <Ionicons name={item.buttons[0].icon} size={18} color="black" />
                 <Text className="font-semibold ml-2 text-sm">
                   {item.buttons[0].title}
@@ -293,13 +298,9 @@ const Home = () => {
                       )}
                     </Text>
                   ))}
-             
                 </View>
-                
               </View>
-              
             </View>
-            
 
             <View className="mb-3">
               <Text className="text-xl font-bold mb-1">
@@ -310,15 +311,11 @@ const Home = () => {
               </Text>
             </View>
 
-          
-
             <TouchableOpacity className="bg-white border border-gray-300 rounded-lg py-2 flex-row items-center justify-between px-4 mt-5">
               <Text className="text-sm font-semibold">{item.button}</Text>
               <Ionicons name="notifications-outline" size={22} color="black" />
             </TouchableOpacity>
-            
           </View>
-          
         );
 
       case 4: // Savings Account
@@ -437,7 +434,6 @@ const Home = () => {
             Ramadan{"\n"}Feast
           </Text>
         </View>
-        
 
         <View className="items-center w-16 mx-2">
           <View className="h-12 w-12 rounded-full border border-gray-200 items-center justify-center bg-white shadow-sm">
