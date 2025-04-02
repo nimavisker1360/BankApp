@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stack } from "expo-router";
+import { Stack, useRouter, usePathname } from "expo-router";
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
 import HamburgerMenu from "./HamburgerMenu";
@@ -8,6 +8,8 @@ import QRTransactionsModal from "./QRTransactionsModal";
 import MoneyTransferModal from "./MoneyTransferModal";
 
 const TabsLayout = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [menuVisible, setMenuVisible] = useState(false);
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
   const [qrModalVisible, setQrModalVisible] = useState(false);
@@ -64,6 +66,12 @@ const TabsLayout = () => {
             },
           }}
         />
+        <Stack.Screen
+          name="Payments"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
 
       {/* Hamburger Menu Modal */}
@@ -92,12 +100,27 @@ const TabsLayout = () => {
 
       {/* Bottom Navigation */}
       <View className="absolute bottom-0 left-0 right-0 flex-row justify-evenly items-center py-2 px-2 bg-white ">
-        <View className="items-center w-1/5">
-          <Ionicons name="home" size={22} color="black" />
-          <Text style={{ fontSize: 9 }} className="mt-1">
+        <TouchableOpacity
+          className="items-center w-1/5"
+          onPress={() => router.push("/Home")}
+        >
+          <Ionicons
+            name="home"
+            size={22}
+            color={pathname === "/Home" ? "#000000" : "gray"}
+          />
+          <Text
+            style={{
+              fontSize: 9,
+              fontWeight: pathname === "/Home" ? "bold" : "normal",
+            }}
+            className={`mt-1 ${
+              pathname === "/Home" ? "text-black" : "text-gray-500"
+            }`}
+          >
             Home
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity
           className="items-center w-1/5"
@@ -125,12 +148,27 @@ const TabsLayout = () => {
           </Text>
         </TouchableOpacity>
 
-        <View className="items-center w-1/5">
-          <AntDesign name="creditcard" size={22} color="gray" />
-          <Text style={{ fontSize: 9 }} className="mt-1 text-gray-500">
+        <TouchableOpacity
+          className="items-center w-1/5"
+          onPress={() => router.push("/Payments")}
+        >
+          <AntDesign
+            name="creditcard"
+            size={22}
+            color={pathname === "/Payments" ? "#000000" : "gray"}
+          />
+          <Text
+            style={{
+              fontSize: 9,
+              fontWeight: pathname === "/Payments" ? "bold" : "normal",
+            }}
+            className={`mt-1 ${
+              pathname === "/Payments" ? "text-black" : "text-gray-500"
+            }`}
+          >
             Payments
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <View className="items-center w-1/5">
           <MaterialIcons name="credit-card" size={22} color="gray" />
