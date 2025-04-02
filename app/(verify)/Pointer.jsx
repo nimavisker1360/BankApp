@@ -2,7 +2,6 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 
-
 const Pointer = () => {
   const router = useRouter();
 
@@ -114,9 +113,13 @@ const Pointer = () => {
 
       <TouchableOpacity
         className="bg-[#4285F4] px-8 py-3 rounded-xl mt-8"
-        onPress={() => router.push("Loading")}
+        onPress={() =>
+          router.push({
+            pathname: "/Loading",
+            params: { from: "pointer" },
+          })
+        }
       >
-        
         <Text className="text-white font-bold">Continue</Text>
       </TouchableOpacity>
     </View>

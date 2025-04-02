@@ -48,7 +48,7 @@ const NewPin = () => {
     if (pin.every((digit) => digit !== "")) {
       // Handle PIN confirmation
       console.log("PIN set:", pin.join(""));
-      // Navigate to next screen
+      router.push("/Loading");
     }
   };
 
@@ -58,9 +58,7 @@ const NewPin = () => {
       className="flex-1 bg-white"
     >
       <View className="flex-1 px-4 mt-10 justify-center">
-        <View className="">
-         
-        </View>
+        <View className=""></View>
 
         <View className="items-center mb-16">
           <Text className="text-3xl font-psemibold text-black-100">
@@ -106,10 +104,7 @@ const NewPin = () => {
             pin.every((digit) => digit !== "") ? "bg-blue-500" : "bg-blue-300"
           }`}
         >
-          <Text
-            className="text-white text-center font-psemibold text-lg"
-            onPress={() => router.push("/(tabs)/Home")}
-          >
+          <Text className="text-white text-center font-psemibold text-lg">
             Continue
           </Text>
         </TouchableOpacity>
