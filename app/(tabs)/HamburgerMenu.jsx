@@ -8,8 +8,53 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
+import {
+  PanGestureHandler,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  runOnJS,
+} from "react-native-reanimated";
 
 const HamburgerMenu = ({ visible, onClose }) => {
+  const translateY = useSharedValue(0);
+
+  const gestureHandler = useAnimatedGestureHandler({
+    onStart: (_, ctx) => {
+      ctx.startY = translateY.value;
+    },
+    onActive: (event, ctx) => {
+      // Only allow downward swipes
+      if (event.translationY > 0) {
+        translateY.value = ctx.startY + event.translationY;
+      }
+    },
+    onEnd: (event) => {
+      // If swiped down enough, close the menu
+      if (event.translationY > 100) {
+        translateY.value = withTiming(10, {
+          duration: 100,
+        });
+        runOnJS(onClose)();
+      } else {
+        // Otherwise, snap back to original position
+        translateY.value = withTiming(0, {
+          duration: 300,
+        });
+      }
+    },
+  });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
+
   const menuItems = [
     {
       id: "notifications",
@@ -85,42 +130,50 @@ const HamburgerMenu = ({ visible, onClose }) => {
       animationType="none"
       onRequestClose={onClose}
     >
-      <View className="flex-1 bg-black/50 justify-end">
-        <Animatable.View
-          animation="slideInUp"
-          duration={300}
-          className="bg-white rounded-t-3xl"
-        >
-          <View>
-            {menuItems.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                className="flex-row items-center px-6 py-3 border-b border-gray-100"
-                onPress={() => onClose()}
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View className="flex-1 bg-black/50 justify-end">
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={animatedStyle}>
+              <Animatable.View
+                animation="slideInUp"
+                duration={300}
+                className="bg-white rounded-t-3xl"
               >
-                <View className="w-8">{item.icon}</View>
-                <Text className="text-lg font-medium ml-4 flex-1">
-                  {item.title}
-                </Text>
-                {item.badge && (
-                  <View className="h-7 w-7 bg-red-500 rounded-full items-center justify-center">
-                    <Text className="text-white font-bold">{item.badge}</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
+                <View className="w-16 h-1 bg-gray-300 rounded-full self-center my-2"></View>
+                <View>
+                  {menuItems.map((item) => (
+                    <TouchableOpacity
+                      key={item.id}
+                      className="flex-row items-center px-6 py-3 border-b border-gray-100"
+                      onPress={() => onClose()}
+                    >
+                      <View className="w-8">{item.icon}</View>
+                      <Text className="text-lg font-medium ml-4 flex-1">
+                        {item.title}
+                      </Text>
+                      {item.badge && (
+                        <View className="h-7 w-7 bg-red-500 rounded-full items-center justify-center">
+                          <Text className="text-white font-bold">
+                            {item.badge}
+                          </Text>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
 
-          <View className="py-4 items-center"></View>
-          <TouchableOpacity
-          className="bg-black py-4 mx-6 mt-4 mb-2 rounded-2xl items-center"
-          onPress={onClose}
-        >
-          <Text className="text-white text-lg font-medium">Cancel</Text>
-        </TouchableOpacity>
-        </Animatable.View>
-        
-      </View>
+                <View className="py-4 items-center"></View>
+                <TouchableOpacity
+                  className="bg-black py-4 mx-6 mt-4 mb-2 rounded-2xl items-center"
+                  onPress={onClose}
+                >
+                  <Text className="text-white text-lg font-medium">Cancel</Text>
+                </TouchableOpacity>
+              </Animatable.View>
+            </Animated.View>
+          </PanGestureHandler>
+        </View>
+      </GestureHandlerRootView>
     </Modal>
   );
 };
