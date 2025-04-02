@@ -4,10 +4,15 @@ import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
 import HamburgerMenu from "./HamburgerMenu";
 import ProfileMenu from "./ProfileMenu";
+import QRTransactionsModal from "./QRTransactionsModal";
+import MoneyTransferModal from "./MoneyTransferModal";
 
 const TabsLayout = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
+  const [qrModalVisible, setQrModalVisible] = useState(false);
+  const [moneyTransferModalVisible, setMoneyTransferModalVisible] =
+    useState(false);
 
   return (
     <View className="flex-1">
@@ -73,6 +78,18 @@ const TabsLayout = () => {
         onClose={() => setProfileMenuVisible(false)}
       />
 
+      {/* QR Transactions Modal */}
+      <QRTransactionsModal
+        visible={qrModalVisible}
+        onClose={() => setQrModalVisible(false)}
+      />
+
+      {/* Money Transfer Modal */}
+      <MoneyTransferModal
+        visible={moneyTransferModalVisible}
+        onClose={() => setMoneyTransferModalVisible(false)}
+      />
+
       {/* Bottom Navigation */}
       <View className="absolute bottom-0 left-0 right-0 flex-row justify-evenly items-center py-2 px-2 bg-white ">
         <View className="items-center w-1/5">
@@ -82,7 +99,10 @@ const TabsLayout = () => {
           </Text>
         </View>
 
-        <View className="items-center w-1/5">
+        <TouchableOpacity
+          className="items-center w-1/5"
+          onPress={() => setQrModalVisible(true)}
+        >
           <MaterialIcons name="qr-code-scanner" size={22} color="gray" />
           <Text
             style={{ fontSize: 7 }}
@@ -90,9 +110,12 @@ const TabsLayout = () => {
           >
             QR Transactions
           </Text>
-        </View>
+        </TouchableOpacity>
 
-        <View className="items-center w-1/5">
+        <TouchableOpacity
+          className="items-center w-1/5"
+          onPress={() => setMoneyTransferModalVisible(true)}
+        >
           <Ionicons name="paper-plane-outline" size={22} color="gray" />
           <Text
             style={{ fontSize: 9 }}
@@ -100,7 +123,7 @@ const TabsLayout = () => {
           >
             Money Transfer
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <View className="items-center w-1/5">
           <AntDesign name="creditcard" size={22} color="gray" />
