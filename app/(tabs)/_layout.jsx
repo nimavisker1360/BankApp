@@ -3,9 +3,11 @@ import { Stack } from "expo-router";
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
 import HamburgerMenu from "./HamburgerMenu";
+import ProfileMenu from "./ProfileMenu";
 
 const TabsLayout = () => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [profileMenuVisible, setProfileMenuVisible] = useState(false);
 
   return (
     <View className="flex-1">
@@ -39,7 +41,11 @@ const TabsLayout = () => {
               </TouchableOpacity>
             ),
             headerRight: () => (
-              <TouchableOpacity style={{ width: 40 }} className="items-center">
+              <TouchableOpacity
+                style={{ width: 40 }}
+                className="items-center"
+                onPress={() => setProfileMenuVisible(true)}
+              >
                 <Ionicons
                   name="person-circle-outline"
                   size={28}
@@ -59,6 +65,12 @@ const TabsLayout = () => {
       <HamburgerMenu
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
+      />
+
+      {/* Profile Menu Modal */}
+      <ProfileMenu
+        visible={profileMenuVisible}
+        onClose={() => setProfileMenuVisible(false)}
       />
 
       {/* Bottom Navigation */}
