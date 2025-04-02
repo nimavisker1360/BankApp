@@ -136,8 +136,6 @@ const Home = () => {
         </View>
       </View>
 
-      {/* Dots Indicator */}
-
       {/* Monthly Summary */}
       <View
         className="mx-4 bg-white rounded-xl shadow-lg"
@@ -205,7 +203,7 @@ const Home = () => {
             </View>
             <View>
               <Text className="text-lg font-bold">İspark</Text>
-              <Text className="text-gray-500">Papara Card</Text>
+              <Text className="text-gray-500">ApBank Card</Text>
             </View>
           </View>
           <View className="items-end">

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Stack } from "expo-router";
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
+import HamburgerMenu from "./HamburgerMenu";
 
 const TabsLayout = () => {
+  const [menuVisible, setMenuVisible] = useState(false);
+
   return (
     <View className="flex-1">
       <Stack
@@ -26,8 +29,13 @@ const TabsLayout = () => {
             ),
             headerTitleAlign: "center",
             headerLeft: () => (
-              <TouchableOpacity style={{ width: 40 }} className="items-center">
-                <Ionicons name="menu" size={24} color="black" />
+              <TouchableOpacity
+                className="ml-2"
+                onPress={() => setMenuVisible(true)}
+              >
+                <View className="h-10 w-10 bg-gray-100 rounded-xl items-center justify-center">
+                  <Ionicons name="menu" size={24} color="black" />
+                </View>
               </TouchableOpacity>
             ),
             headerRight: () => (
@@ -46,6 +54,12 @@ const TabsLayout = () => {
           }}
         />
       </Stack>
+
+      {/* Hamburger Menu Modal */}
+      <HamburgerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+      />
 
       {/* Bottom Navigation */}
       <View className="absolute bottom-0 left-0 right-0 flex-row justify-evenly items-center py-2 px-2 bg-white ">
