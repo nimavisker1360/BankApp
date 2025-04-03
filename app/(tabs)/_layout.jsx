@@ -78,6 +78,12 @@ const TabsLayout = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="ABankCard"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
 
       {/* Hamburger Menu Modal */}
@@ -176,15 +182,27 @@ const TabsLayout = () => {
           </Text>
         </TouchableOpacity>
 
-        <View className="items-center w-1/5">
-          <MaterialIcons name="credit-card" size={22} color="gray" />
+        <TouchableOpacity
+          className="items-center w-1/5"
+          onPress={() => router.push("/ABankCard")}
+        >
+          <MaterialIcons
+            name="credit-card"
+            size={22}
+            color={pathname === "/ABankCard" ? "#000000" : "gray"}
+          />
           <Text
-            style={{ fontSize: 9 }}
-            className="mt-1 text-gray-500 text-center"
+            style={{
+              fontSize: 9,
+              fontWeight: pathname === "/ABankCard" ? "bold" : "normal",
+            }}
+            className={`mt-1 ${
+              pathname === "/ABankCard" ? "text-black" : "text-gray-500"
+            }`}
           >
             ABank Card
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
