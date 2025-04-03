@@ -30,8 +30,8 @@ const SendMoney = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showInstallMessage, setShowInstallMessage] = useState(!Contacts);
-  const [activeSubTab, setActiveSubTab] = useState("paparaNo");
-  const [paparaNumber, setPaparaNumber] = useState("");
+  const [activeSubTab, setActiveSubTab] = useState("ABankNo");
+  const [ABankNumber, setABankNumber] = useState("");
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -62,15 +62,15 @@ const SendMoney = () => {
                 /\s+/g,
                 ""
               );
-              // Generate random to simulate if they use Papara or not (for demo purposes)
-              const usesPapara = Math.random() > 0.3;
+              // Generate random to simulate if they use ABank or not (for demo purposes)
+              const usesABank = Math.random() > 0.3;
 
               return {
                 id: contact.id,
                 name: contact.name,
                 phoneNumber: phoneNumber,
                 image: contact.imageAvailable ? contact.image.uri : null,
-                usesPapara,
+                usesABank,
                 initials: getInitials(contact.name),
               };
             });
@@ -210,9 +210,9 @@ const SendMoney = () => {
         </View>
       </View>
 
-      {item.usesPapara && (
-        <View style={styles.paparaIcon}>
-          <Text style={styles.paparaText}>P</Text>
+      {item.usesABank && (
+        <View style={styles.ABankIcon}>
+          <Text style={styles.ABankText}>P</Text>
         </View>
       )}
     </TouchableOpacity>
@@ -281,25 +281,25 @@ const SendMoney = () => {
     );
   };
 
-  const renderPaparaNoPanelContent = () => {
+  const renderABankNoPanelContent = () => {
     return (
-      <View style={styles.paparaNoContent}>
-        {/* Sub tabs for Papara No/IBAN and Easy Address */}
+      <View style={styles.ABankNoContent}>
+        {/* Sub tabs for ABank No/IBAN and Easy Address */}
         <View style={styles.subTabContainer}>
           <TouchableOpacity
             style={[
               styles.subTabButton,
-              activeSubTab === "paparaNo" && styles.activeSubTabButton,
+              activeSubTab === "ABankNo" && styles.activeSubTabButton,
             ]}
-            onPress={() => setActiveSubTab("paparaNo")}
+            onPress={() => setActiveSubTab("ABankNo")}
           >
             <Text
               style={[
                 styles.subTabButtonText,
-                activeSubTab === "paparaNo" && styles.activeSubTabButtonText,
+                activeSubTab === "ABankNo" && styles.activeSubTabButtonText,
               ]}
             >
-              Papara No/IBAN
+              ABank No/IBAN
             </Text>
           </TouchableOpacity>
 
@@ -321,13 +321,13 @@ const SendMoney = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Input field for Papara Number */}
-        <View style={styles.paparaInputContainer}>
+        {/* Input field for ABank Number */}
+        <View style={styles.ABankInputContainer}>
           <TextInput
-            style={styles.paparaInput}
-            placeholder="Papara Number or IBAN"
-            value={paparaNumber}
-            onChangeText={setPaparaNumber}
+            style={styles.ABankInput}
+            placeholder="ABank Number or IBAN"
+            value={ABankNumber}
+            onChangeText={setABankNumber}
             placeholderTextColor="#6b7280"
           />
           <TouchableOpacity style={styles.cameraButton}>
@@ -404,19 +404,19 @@ const SendMoney = () => {
             <TouchableOpacity
               style={[
                 styles.tabButton,
-                activeTab === "papara" && styles.activeTabButton,
+                activeTab === "ABank" && styles.activeTabButton,
               ]}
-              onPress={() => setActiveTab("papara")}
+              onPress={() => setActiveTab("ABank")}
             >
               <Text
                 style={[
                   styles.tabButtonText,
-                  activeTab === "papara" && styles.activeTabButtonText,
+                  activeTab === "ABank" && styles.activeTabButtonText,
                 ]}
               >
-                Papara No/IBAN
+                ABank No/IBAN
               </Text>
-              {activeTab === "papara" && (
+              {activeTab === "ABank" && (
                 <View style={styles.activeTabIndicator} />
               )}
             </TouchableOpacity>
@@ -468,8 +468,8 @@ const SendMoney = () => {
                 {/* Contact list header */}
                 <View style={styles.contactsHeader}>
                   <Text style={styles.contactsHeaderText}>
-                    Contacts using Papara •{" "}
-                    {contacts.filter((c) => c.usesPapara).length}
+                    Contacts using ABank •{" "}
+                    {contacts.filter((c) => c.usesABank).length}
                   </Text>
                 </View>
 
@@ -490,17 +490,17 @@ const SendMoney = () => {
               </>
             ) : (
               <>
-                {/* Quick Transactions for Papara No Tab */}
+                {/* Quick Transactions for ABank No Tab */}
                 {renderQuickTransactions()}
 
-                {/* Papara No/IBAN Content */}
-                {renderPaparaNoPanelContent()}
+                {/* ABank No/IBAN Content */}
+                {renderABankNoPanelContent()}
               </>
             )}
           </View>
 
           {/* Continue Button - Now positioned at bottom of screen */}
-          {activeTab === "papara" && (
+          {activeTab === "ABank" && (
             <View style={[styles.continueButtonContainer, keyboardVisible]}>
               <TouchableOpacity style={styles.continueButton}>
                 <Text style={styles.continueButtonText}>Continue</Text>
@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#6b7280",
   },
-  paparaIcon: {
+  ABankIcon: {
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -700,7 +700,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  paparaText: {
+  ABankText: {
     fontSize: 16,
     fontWeight: "700",
     color: "#000",
@@ -769,12 +769,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
   },
-  paparaNoContent: {
+  ABankNoContent: {
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
   },
-  paparaInputContainer: {
+  ABankInputContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 30,
@@ -785,7 +785,7 @@ const styles = StyleSheet.create({
     height: 45,
     marginBottom: 30,
   },
-  paparaInput: {
+  ABankInput: {
     flex: 1,
     fontSize: 14,
     color: "#1f2937",
