@@ -72,6 +72,12 @@ const TabsLayout = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="SendMoney"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
 
       {/* Hamburger Menu Modal */}

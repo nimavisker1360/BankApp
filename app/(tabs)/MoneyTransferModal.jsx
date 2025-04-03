@@ -7,9 +7,11 @@ import {
   Animated,
 } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const MoneyTransferModal = ({ visible, onClose }) => {
   const slideAnim = useRef(new Animated.Value(300)).current;
+  const router = useRouter();
 
   useEffect(() => {
     if (visible) {
@@ -76,8 +78,8 @@ const MoneyTransferModal = ({ visible, onClose }) => {
         <TouchableOpacity
           style={styles.option}
           onPress={() => {
-            // Handle Mobile Number Transfer
             onClose();
+            router.push("/SendMoney");
           }}
         >
           <Ionicons name="phone-portrait-outline" size={24} color="black" />

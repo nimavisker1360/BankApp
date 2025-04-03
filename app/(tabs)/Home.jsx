@@ -199,7 +199,10 @@ const Home = () => {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity className="flex-1 ml-2 bg-black rounded-lg py-2 flex-row items-center justify-center">
+              <TouchableOpacity
+                className="flex-1 ml-2 bg-black rounded-lg py-2 flex-row items-center justify-center"
+                onPress={() => router.push("/SendMoney")}
+              >
                 <Ionicons name={item.buttons[1].icon} size={18} color="white" />
                 <Text className="font-semibold text-white ml-2 text-sm">
                   {item.buttons[1].title}
