@@ -7,6 +7,9 @@ import {
   Image,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
@@ -27,6 +30,9 @@ const SendMoney = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showInstallMessage, setShowInstallMessage] = useState(!Contacts);
+  const [activeSubTab, setActiveSubTab] = useState("paparaNo");
+  const [paparaNumber, setPaparaNumber] = useState("");
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
     if (!Contacts) {
@@ -84,6 +90,26 @@ const SendMoney = () => {
       }
       setLoading(false);
     })();
+  }, []);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
   }, []);
 
   const getInitials = (name) => {
@@ -192,8 +218,131 @@ const SendMoney = () => {
     </TouchableOpacity>
   );
 
+  const renderQuickTransactions = () => {
+    const quickTransactions = [
+      {
+        id: "1",
+        name: "Kozaparak Toplu...",
+        color: "#22c55e",
+        initials: "K",
+      },
+      {
+        id: "2",
+        name: "BURGAZ BLOCK...",
+        color: "#22c55e",
+        initials: "B",
+      },
+      {
+        id: "3",
+        name: "Golnaz",
+        color: "#3b82f6",
+        initials: "$",
+      },
+      {
+        id: "4",
+        name: "NIMA BAGHERI...",
+        color: "#3b82f6",
+        initials: "$",
+      },
+    ];
+
+    return (
+      <View style={styles.quickContactsContainer}>
+        <View style={styles.quickContactsHeader}>
+          <Text style={styles.quickContactsTitle}>Quick Transactions</Text>
+          <TouchableOpacity>
+            <Text style={styles.addEditButton}>Add/Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={quickTransactions}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.quickContactItem}>
+              <View
+                style={[
+                  styles.quickContactAvatar,
+                  { backgroundColor: item.color },
+                ]}
+              >
+                <Text style={[styles.quickContactInitials, { color: "white" }]}>
+                  {item.initials}
+                </Text>
+              </View>
+              <Text style={styles.quickContactName}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.quickContactsList}
+        />
+      </View>
+    );
+  };
+
+  const renderPaparaNoPanelContent = () => {
+    return (
+      <View style={styles.paparaNoContent}>
+        {/* Sub tabs for Papara No/IBAN and Easy Address */}
+        <View style={styles.subTabContainer}>
+          <TouchableOpacity
+            style={[
+              styles.subTabButton,
+              activeSubTab === "paparaNo" && styles.activeSubTabButton,
+            ]}
+            onPress={() => setActiveSubTab("paparaNo")}
+          >
+            <Text
+              style={[
+                styles.subTabButtonText,
+                activeSubTab === "paparaNo" && styles.activeSubTabButtonText,
+              ]}
+            >
+              Papara No/IBAN
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.subTabButton,
+              activeSubTab === "easyAddress" && styles.activeSubTabButton,
+            ]}
+            onPress={() => setActiveSubTab("easyAddress")}
+          >
+            <Text
+              style={[
+                styles.subTabButtonText,
+                activeSubTab === "easyAddress" && styles.activeSubTabButtonText,
+              ]}
+            >
+              Easy Address
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Input field for Papara Number */}
+        <View style={styles.paparaInputContainer}>
+          <TextInput
+            style={styles.paparaInput}
+            placeholder="Papara Number or IBAN"
+            value={paparaNumber}
+            onChangeText={setPaparaNumber}
+            placeholderTextColor="#6b7280"
+          />
+          <TouchableOpacity style={styles.cameraButton}>
+            <Ionicons name="camera-outline" size={24} color="#6b7280" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -273,67 +422,94 @@ const SendMoney = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Quick Contacts */}
-          <View style={styles.quickContactsContainer}>
-            <View style={styles.quickContactsHeader}>
-              <Text style={styles.quickContactsTitle}>Quick contacts</Text>
-              <TouchableOpacity>
-                <Text style={styles.addEditButton}>Add/Edit</Text>
+          {/* Main content view */}
+          <View style={styles.mainContentContainer}>
+            {/* Render appropriate content based on active tab */}
+            {activeTab === "phone" ? (
+              <>
+                {/* Quick Contacts */}
+                <View style={styles.quickContactsContainer}>
+                  <View style={styles.quickContactsHeader}>
+                    <Text style={styles.quickContactsTitle}>
+                      Quick contacts
+                    </Text>
+                    <TouchableOpacity>
+                      <Text style={styles.addEditButton}>Add/Edit</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <FlatList
+                    data={quickContacts}
+                    renderItem={renderQuickContact}
+                    keyExtractor={(item) => item.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.quickContactsList}
+                  />
+                </View>
+
+                {/* Search */}
+                <View style={styles.searchContainer}>
+                  <Ionicons
+                    name="search"
+                    size={22}
+                    color="#9ca3af"
+                    style={styles.searchIcon}
+                  />
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder="To Whom?"
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    placeholderTextColor="#9ca3af"
+                  />
+                </View>
+
+                {/* Contact list header */}
+                <View style={styles.contactsHeader}>
+                  <Text style={styles.contactsHeaderText}>
+                    Contacts using Papara •{" "}
+                    {contacts.filter((c) => c.usesPapara).length}
+                  </Text>
+                </View>
+
+                {/* Contact List */}
+                {loading ? (
+                  <View style={styles.loadingContainer}>
+                    <Text>Loading contacts...</Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={filterContacts()}
+                    renderItem={renderContactItem}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={styles.contactsList}
+                    showsVerticalScrollIndicator={false}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                {/* Quick Transactions for Papara No Tab */}
+                {renderQuickTransactions()}
+
+                {/* Papara No/IBAN Content */}
+                {renderPaparaNoPanelContent()}
+              </>
+            )}
+          </View>
+
+          {/* Continue Button - Now positioned at bottom of screen */}
+          {activeTab === "papara" && (
+            <View style={[styles.continueButtonContainer, keyboardVisible]}>
+              <TouchableOpacity style={styles.continueButton}>
+                <Text style={styles.continueButtonText}>Continue</Text>
               </TouchableOpacity>
             </View>
-
-            <FlatList
-              data={quickContacts}
-              renderItem={renderQuickContact}
-              keyExtractor={(item) => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.quickContactsList}
-            />
-          </View>
-
-          {/* Search */}
-          <View style={styles.searchContainer}>
-            <Ionicons
-              name="search"
-              size={22}
-              color="#9ca3af"
-              style={styles.searchIcon}
-            />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="To Whom?"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              placeholderTextColor="#9ca3af"
-            />
-          </View>
-
-          {/* Contact list header */}
-          <View style={styles.contactsHeader}>
-            <Text style={styles.contactsHeaderText}>
-              Contacts using Papara •{" "}
-              {contacts.filter((c) => c.usesPapara).length}
-            </Text>
-          </View>
-
-          {/* Contact List */}
-          {loading ? (
-            <View style={styles.loadingContainer}>
-              <Text>Loading contacts...</Text>
-            </View>
-          ) : (
-            <FlatList
-              data={filterContacts()}
-              renderItem={renderContactItem}
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={styles.contactsList}
-              showsVerticalScrollIndicator={false}
-            />
           )}
         </>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -354,7 +530,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "700",
   },
   infoButton: {
@@ -367,7 +543,7 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     flex: 1,
-    paddingVertical: 16,
+    paddingVertical: 12,
     alignItems: "center",
     position: "relative",
   },
@@ -376,7 +552,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000",
   },
   tabButtonText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#9ca3af",
     fontWeight: "500",
   },
@@ -393,7 +569,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   quickContactsContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     paddingVertical: 12,
   },
   quickContactsHeader: {
@@ -403,20 +579,22 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   quickContactsTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#6b7280",
   },
   addEditButton: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#000",
     fontWeight: "500",
   },
   quickContactsList: {
-    paddingRight: 16,
+    paddingRight: 10,
+    alignItems: "flex-start",
   },
   quickContactItem: {
     alignItems: "center",
-    marginRight: 16,
+    marginRight: 8,
+    width: 60,
   },
   quickContactImage: {
     width: 56,
@@ -424,21 +602,21 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   quickContactAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     backgroundColor: "#e5e7eb",
     alignItems: "center",
     justifyContent: "center",
   },
   quickContactInitials: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "600",
     color: "#374151",
   },
   quickContactName: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 12,
     color: "#374151",
   },
   searchContainer: {
@@ -446,7 +624,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 16,
     paddingHorizontal: 16,
-    height: 56,
+    height: 45,
     backgroundColor: "#f9fafb",
     borderRadius: 28,
     marginBottom: 16,
@@ -456,7 +634,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     color: "#1f2937",
   },
   contactsHeader: {
@@ -464,7 +642,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   contactsHeaderText: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#6b7280",
   },
   contactsList: {
@@ -489,15 +667,15 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   contactAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
   },
   contactInitials: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#ffffff",
   },
@@ -505,13 +683,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   contactName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#1f2937",
     marginBottom: 4,
   },
   contactPhone: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#6b7280",
   },
   paparaIcon: {
@@ -523,7 +701,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   paparaText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "700",
     color: "#000",
   },
@@ -534,12 +712,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   installTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
   },
   installText: {
-    fontSize: 16,
+    fontSize: 14,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -559,13 +737,101 @@ const styles = StyleSheet.create({
   },
   backToHomeText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  subTabContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e5e7eb",
+    marginTop: 10,
+  },
+  subTabButton: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  activeSubTabButton: {
+    backgroundColor: "#000",
+  },
+  subTabButtonText: {
+    fontSize: 14,
+    color: "#9ca3af",
+    fontWeight: "500",
+  },
+  activeSubTabButtonText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  paparaNoContent: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+  },
+  paparaInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 30,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 45,
+    marginBottom: 30,
+  },
+  paparaInput: {
+    flex: 1,
+    fontSize: 14,
+    color: "#1f2937",
+    height: "100%",
+  },
+  cameraButton: {
+    padding: 8,
+  },
+  mainContentContainer: {
+    flex: 1,
+  },
+  continueButtonContainer: {
+    position: "absolute",
+    bottom: 100,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    backgroundColor: "transparent",
+  },
+  continueButtonWithKeyboard: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    backgroundColor: "transparent",
+  },
+  continueButton: {
+    backgroundColor: "#BEBEBE",
+    height: 45,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  continueButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#fff",
   },
 });
 
