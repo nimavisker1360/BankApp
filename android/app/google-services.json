@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "91058935313",
+    "project_id": "apbank-f4ddc",
+    "storage_bucket": "apbank-f4ddc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91058935313:android:7ebbda66f9503eb619c3b0",
+        "android_client_info": {
+          "package_name": "com.visker1360.myfifimfb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx32j9w9dtlZjFDO4dhUOk-P76KDlkyg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

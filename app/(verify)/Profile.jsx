@@ -21,6 +21,8 @@ const Profile = () => {
   const [fullName, setFullName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [showDateOfBirth, setShowDateOfBirth] = useState(false);
   const [date, setDate] = useState(new Date());
 
@@ -54,18 +56,6 @@ const Profile = () => {
             <Text className="text-2xl font-bold ml-2">Fill Your Profile</Text>
           </View>
 
-          {/* Profile Image */}
-          <View className="items-center mb-6 mt-4">
-            <View className="relative">
-              <View className="w-32 h-32 rounded-full bg-[#475569] overflow-hidden justify-center items-center">
-                <View className="w-20 h-20 bg-[#E2E8F0] rounded-full" />
-              </View>
-              <TouchableOpacity className="absolute bottom-0 right-0 bg-[#2563EB] w-10 h-10 rounded-full justify-center items-center">
-                <FeatherIcon name="edit-2" size={20} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
-
           {/* Form */}
           <View className="space-y-4 mt-4">
             <TextInput
@@ -87,6 +77,24 @@ const Profile = () => {
               keyboardType="email-address"
               className="bg-gray-50 p-4 rounded-lg text-base"
             />
+
+            {/* Password Field */}
+            <View className="bg-gray-50 p-4 rounded-lg flex-row items-center">
+              <TextInput
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                className="flex-1 text-base"
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Feather
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            </View>
 
             {/* Date Field */}
             <TouchableOpacity
@@ -128,19 +136,12 @@ const Profile = () => {
           </View>
 
           {/* Bottom Buttons */}
-          <View className="flex-row justify-between mt-12 mb-4">
-            <TouchableOpacity className="bg-gray-50 rounded-full py-4 px-8 flex-1 mr-2 items-center">
-              <Text className="text-blue-500 font-semibold text-base">
-                Skip
-              </Text>
-            </TouchableOpacity>
+          <View className="flex-row justify-center mt-12 mb-4">
             <TouchableOpacity
-              className="bg-blue-500 rounded-full py-4 px-8 flex-1 ml-2 items-center"
+              className="bg-blue-500 rounded-full py-4 px-8 flex-1 items-center"
               onPress={() => router.push("/Pointer")}
             >
-              <Text className="text-white font-semibold text-base">
-                Continue
-              </Text>
+              <Text className="text-white font-semibold text-base">Signup</Text>
             </TouchableOpacity>
           </View>
         </View>
